@@ -1,0 +1,152 @@
+
+//共用的颜色以及样式文件
+
+//约束
+//手机端的专属类名加一个 m 代表
+
+//页面rem单位，根元素大小
+/* iPhone字体大小 */
+@media screen and (max-width: 414px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* iPad字体大小 */
+@media screen and (min-width: 415px) and (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* PC端字体大小 */
+@media screen and (min-width: 769px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+
+//样式
+*{
+  margin: 0;
+  padding: 0;
+}
+.flex{
+  display: flex;
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.border{
+  border: 1px solid gainsboro;
+}
+
+
+// 颜色
+.bg{
+  background: #f7f7f7;
+  .whiteBg{
+    background: white;
+  }
+
+  button{
+    background: #000000;
+    outline: none;
+    width: 9.2rem;
+    height: 3rem;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 1.5rem;
+    font-size: 1.2rem;
+  }
+}
+// 文字链接样式
+.textLink{
+  color: #529dd3;
+  cursor: pointer;
+}
+// 主题色背景
+.themeBtn{
+  background: #D5E80E;
+}
+.homeBg{
+  background: #fff;
+}
+// 左右布局下，右侧内容公共样式
+.contain {
+  margin-top: 1.2rem;
+}
+.block {
+  margin-top: 1.2rem;
+}
+.pointer{
+  cursor: pointer;
+}
+
+//左右布局页面，设置导航和内容平行，并固定
+.container{
+  display: flex;
+  $navWidth:14rem;
+  .nav{
+    width: $navWidth;
+    height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    //background: azure;
+  }
+  .contain{
+    width: calc(100% - $navWidth);
+  }
+}
+
+// 页面头部标题和搜索框
+$rightGap:1.2rem;
+
+.head{
+  width: calc(100% - $rightGap);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .search{
+    $Height:2.5rem;
+    display: flex;
+    align-items: center;
+    input{
+      box-sizing: border-box;
+      width: 12rem;
+      padding: 0 0.5rem;
+      height: $Height;
+      border-radius: 0.58rem;
+      border: 1px solid gainsboro;
+      outline: none;
+    }
+    button{
+      width: 5.5rem;
+      height: $Height;
+      border-radius: 0.4rem;
+      background: #545454;
+      border: 0;
+      margin-left: 0.7rem;
+    }
+  }
+}
+.rightGap{
+  margin-right: $rightGap;
+}
+
+.one-line-ellipsis {
+  /* 设置文字只显示一行 */
+  white-space: nowrap;
+  /* 超出部分使用省略号 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
