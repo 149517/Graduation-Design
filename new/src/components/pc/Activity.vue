@@ -1,6 +1,43 @@
 <script setup>
+import {onMounted, ref} from "vue";
 
+const data = ref([{
+  aid: null,
+  content: null,
+  type: 0,
+  images: [
+    {
+      image: null,
+      description: "无"
+    }
+  ]
+}])
+const router = useRouter()
+const openDetails = (aid) =>{
+  router.push(`/activityDetails/${aid}`)
+}
+const getActivity = async () => {
+  const result = await activityApi.getActivity()
+  console.log(result)
+  data.value = result.data
+}
+
+// 字符串截取
+const getTruncatedContent = (content) => {
+  if (content) {
+    const commaIndex = content.indexOf('，');
+    return commaIndex !== -1 ? content.substring(0, commaIndex) : content;
+  } else {
+    return '';
+  }
+}
+
+onMounted(() => {
+  getActivity()
+})
 import Nav from "./section/nav.vue";
+import {activityApi} from "../../utils/api.js";
+import {useRouter} from "vue-router";
 </script>
 
 <template>
@@ -19,83 +56,40 @@ import Nav from "./section/nav.vue";
         </div>
       </div>
       <div class="block rightGap">
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/01.jpg" alt="活动">
+        <div class="box whiteBg border" v-for="item in data" :key="item.aid" @click="openDetails(item.aid)">
+          <img :src="item.images && item.images.length > 0 ? item.images[0].image : ''"
+               :alt="item.images && item.images.length > 0 ? item.images[0].description : ''"
+               v-if="item.images !== null && item.images.length > 0">
+
           <div class="info">
             <div class="line">
-              <div class="type activity">
+              <div class="type activity" v-if="item.type === 0">
                 活动
               </div>
-              <div class="name">
-                去海边旅游
-              </div>
-            </div>
-
-            <div class="intro">
-              五一打算自驾去海边，目前2个人，再来2个，会开车最好。
-            </div>
-          </div>
-        </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/01.jpg" alt="活动">
-          <div class="info">
-            <div class="line">
-              <div class="type activity">
-                活动
-              </div>
-              <div class="name">
-                去海边旅游
-              </div>
-            </div>
-
-            <div class="intro">
-              五一打算自驾去海边，目前2个人，再来2个，会开车最好。
-            </div>
-          </div>
-        </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/01.jpg" alt="活动">
-          <div class="info">
-            <div class="line">
-              <div class="type game">
+              <div class="type game" v-if="item.type === 1">
                 游戏
               </div>
               <div class="name">
-                去海边旅游
+                {{ getTruncatedContent(item.content) }}
               </div>
             </div>
 
             <div class="intro">
-              五一打算自驾去海边，目前2个人，再来2个，会开车最好。
+              {{ item.content }}
             </div>
           </div>
         </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/01.jpg" alt="活动">
-          <div class="info">
-            <div class="line">
-              <div class="type activity">
-                活动
-              </div>
-              <div class="name">
-                去海边旅游
-              </div>
-            </div>
 
-            <div class="intro">
-              五一打算自驾去海边，目前2个人，再来2个，会开车最好。
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.contain{
+.contain {
   margin-bottom: 1.2rem;
 }
+
 .block {
   display: grid;
   gap: 1.1rem;
@@ -126,10 +120,12 @@ import Nav from "./section/nav.vue";
       color: white;
       border-radius: 0.27rem;
     }
-    .activity{
+
+    .activity {
       background: #eeb142;
     }
-    .game{
+
+    .game {
       background: #4ba7ef;
     }
 

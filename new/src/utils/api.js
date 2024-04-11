@@ -66,13 +66,70 @@ const postApi = {
                 throw err;
             });
     },
-    fileUpload(fileList){
-        return axios.post('/post/add_post',fileList)
+    fileUpload(fileList) {
+        return axios.post('/post/add_post', fileList)
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    },
+};
+
+const helpApi = {
+    getHelps() {
+        return axios.post('/help/all')
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    },
+    getHelpDetails(hid) {
+        return axios.post('/help/by', {hid: hid})
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    },
+    fileUpload(fileList) {
+        return axios.post('/help/add_help', fileList)
             .then((res) => res.data)
             .catch((err) => {
                 throw err;
             });
     }
-};
+}
 
-export {userApi, postApi};
+const activityApi = {
+    getActivity() {
+        return axios.post('/activity/all')
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    },
+    getActivityDetails(aid) {
+        return axios.post('/activity/by', {aid: aid})
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    }
+}
+
+const goodsApi = {
+    getGoods() {
+        return axios.post('/goods/all')
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    },
+    getGoodsDetails(gid) {
+        return axios.post('/goods/by', {gid: gid})
+            .then((res) => res.data)
+            .catch((err) => {
+                throw err;
+            });
+    }
+}
+export {userApi, postApi, helpApi, activityApi,goodsApi};

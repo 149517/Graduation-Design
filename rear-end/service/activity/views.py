@@ -8,13 +8,11 @@ from django.core.files.base import ContentFile
 import base64
 from datetime import datetime
 
-from help.models import Help, Images
+from activity.models import Activity, Images
 from user.models import UserInfo
 
 
 # Create your views here.
-
-# 获取所有的 help
 def all_view(request):
     if request.method == 'GET':
         return None
@@ -27,32 +25,33 @@ def all_view(request):
         else:
             return JsonResponse({'status': 'error', 'message': '没有Token'}, status=401)
 
-        all_helps = Help.objects.all()
+        all_activity = Activity.objects.all()
         # 查询所有的帖子数据
         # 创建一个空列表，用于存储求助帖子的数据
         data = []
 
         # 遍历每个帖子，获取帖子及其关联数据，并添加到 helps_data 列表中
-        for help in all_helps:
+        for activity in all_activity:
             # 获取帖子数据
-            help_data = {
-                'hid': help.hid,
-                'content': help.content,
-                'time': help.time,
-                "status": help.status,
+            activity_data = {
+                'aid': activity.aid,
+                'content': activity.content,
+                'time': activity.time,
+                "type": activity.type,
+                'number': activity.number
             }
 
             # 获取帖子关联的图片数据
-            images_data = list(help.image_set.values('image', 'description', 'upload_time'))
+            images_data = list(activity.image_set.values('image', 'description', 'upload_time'))
             # 处理每个图片的路径，在路径前添加特定的字符串
             for image_data in images_data:
                 image_data['image'] = "http://localhost:8000/" + image_data['image']  # 在图片路径前添加 "http://"
 
             # 将帖子及其关联数据打包到 help_data 字典中
-            help_data['images'] = images_data
+            activity_data['images'] = images_data
 
             # 将帖子数据添加到 helps_data 列表中
-            data.append(help_data)
+            data.append(activity_data)
 
         # 返回 JSON 响应
         return JsonResponse({'status': 'success', 'data': data}, status=200)
@@ -60,13 +59,11 @@ def all_view(request):
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 
-# 返回单个互助帖子信息
-# @csrf_exempt
-def get_help_by_hid(request):
+def get_activity_by_aid(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         # 获取 pid 参数
-        hid = data.get('hid')
+        aid = data.get('aid')
         user_data = parse_jwt_token(request)
         uid = None
         if user_data:
@@ -75,10 +72,10 @@ def get_help_by_hid(request):
             # print(uid, username)
 
         try:
-            help = Help.objects.get(hid=hid)
+            activity = Activity.objects.get(aid=aid)
 
             # 获取帖子关联的图片数据
-            images_data = list(help.image_set.values('image', 'description', 'upload_time'))
+            images_data = list(activity.image_set.values('image', 'description', 'upload_time'))
             # 处理每个图片的路径，在路径前添加特定的字符串
             for image_data in images_data:
                 image_data['image'] = "http://localhost:8000/" + image_data['image']  # 在图片路径前添加 "http://"
@@ -86,24 +83,24 @@ def get_help_by_hid(request):
             # 构造返回给客户端的数据
             response_data = {
                 'status': 'success',
-                'hid': help.hid,
-                'content': help.content,
-                'time': help.time,
+                'aid': activity.aid,
+                'content': activity.content,
+                'time': activity.time,
+                'number': activity.number,
                 'user': {
-                    'uid': help.user.uid,
-                    'username': help.user.username,
-                    'pic': 'http://localhost:8000' + help.user.pic.url if help.user.pic else None
+                    'uid': activity.user.uid,
+                    'username': activity.user.username,
+                    'pic': 'http://localhost:8000' + activity.user.pic.url if activity.user.pic else None
                 },
                 'images': images_data,
             }
             return JsonResponse(response_data, status=200)
-        except Help.DoesNotExist:
+        except Activity.DoesNotExist:
             return JsonResponse({'status': 'error', 'message': '内容不存在'}, status=404)
     else:
         return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
 
 
-# 添加互助信息
 def add_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -122,8 +119,8 @@ def add_view(request):
             current_user = UserInfo.objects.get(pk=user_data['uid'])
 
             # 创建帖子对象并保存基本信息
-            new_help = Help(content=content, user=current_user)
-            new_help.save()
+            new_activity = Activity(content=content, user=current_user)
+            new_activity.save()
 
             print("cccc")
             # 保存图片数据
@@ -139,13 +136,13 @@ def add_view(request):
                     print(f"Error decoding Base64 image data for index {idx}: {e}")
                     continue  # 跳过当前循环，继续处理下一个图片
                 # 生成图片文件名，格式为 pid_uid_时间戳.png
-                image_filename = f"{new_help.hid}_{current_user.uid}_{datetime.now().strftime('%Y%m%d%H%M%S%f')}.jpg"
+                image_filename = f"{new_activity.aid}_{current_user.uid}_{datetime.now().strftime('%Y%m%d%H%M%S%f')}.jpg"
                 # 创建 Images 对象并将图片数据保存为文件
-                image_instance = Images.objects.create(description=f'image_{idx}', help=new_help)
+                image_instance = Images.objects.create(description=f'image_{idx}', activity=new_activity)
                 image_instance.image.save(image_filename, ContentFile(image_data), save=True)
 
             # 返回添加成功的响应
-            return JsonResponse({'status': 'success', 'message': '求助信息添加成功'}, status=200)
+            return JsonResponse({'status': 'success', 'message': '活动添加成功'}, status=200)
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
     else:

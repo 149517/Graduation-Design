@@ -1,6 +1,37 @@
 <script setup>
 
 import Nav from "./section/nav.vue";
+import {onMounted, ref} from "vue";
+import {helpApi} from "../../utils/api.js";
+import {formatDate} from "../../utils/utils.js";
+import {useRouter} from "vue-router";
+import Release from "./section/release.vue";
+
+const helps = ref([{
+  hid: null,
+  content: null,
+  time: null,
+  status: 1,
+  images: [{
+    image: null,
+    description: null
+  }]
+}
+])
+
+const getHelps = async () => {
+  const result = await helpApi.getHelps()
+  console.log(result)
+  helps.value = result.data
+}
+const router = useRouter()
+const openDetails = (hid) =>{
+  router.push(`/helpDetails/${hid}`)
+}
+onMounted(() => {
+  getHelps()
+})
+
 </script>
 
 <template>
@@ -18,66 +49,39 @@ import Nav from "./section/nav.vue";
           </button>
         </div>
       </div>
-      <div class="block rightGap">
-        <div class="box whiteBg">
-          <div class="state">
-            <div class="color">
-              *
-              <!--              通过设置内容的重要级别来显示不同的颜色-->
+      <div class="block rightGap whiteBg">
+        <div class="box" v-for="item in helps" :key="item.hid">
+          <div
+              @click="openDetails(item.hid)"
+              :class="{'Incomplete': item.status === 1, 'Completed': item.status === -1, 'In_progress': item.status === 0}">
+            <div class="state" v-if="item.status === 1">
+              <div class="color"></div>
+              未完成
             </div>
-            进行中
-          </div>
-          <div class="content">
-            找一个同学帮忙打印一份文件送给老师，感谢！！
-          </div>
-          <div class="images">
-            <img src="../../assets/logo.png" alt="">
-            <img src="../../assets/logo.png" alt="">
-            <img src="../../assets/logo.png" alt="">
-            <img src="../../assets/logo.png" alt="">
-          </div>
-          <div class="time">
-            2024.04.06
+            <div class="state" v-if="item.status === -1">
+              <div class="color"></div>
+              已完成
+            </div>
+            <div class="state" v-if="item.status === 0">
+              <div class="color"></div>
+              进行中
+            </div>
+            <div class="content">
+              {{ item.content }}
+            </div>
+            <div class="images" v-for="li in item.images">
+              <img :src="li.image" :alt="li.description">
+            </div>
+            <div class="time">
+              {{ formatDate(item.time) }}
+            </div>
           </div>
         </div>
-        <div class="box whiteBg">
-          <div class="state">
-            <div class="color">
-              *
-            </div>
-            进行中
-          </div>
-          <div class="content">
-            找一个同学帮忙打印一份文件送给老师，感谢！！
-          </div>
-          <div class="images">
-            <img src="../../assets/logo.png" alt="">
-            <img src="../../assets/logo.png" alt="">
-          </div>
-          <div class="time">
-            2024.04.06
-          </div>
-        </div>
-        <div class="box whiteBg">
-          <div class="state">
-            <div class="color">
-              *
-            </div>
-            进行中
-          </div>
-          <div class="content">
-            找一个同学帮忙打印一份文件送给老师，感谢！！
-          </div>
-          <div class="images">
-            <img src="../../assets/logo.png" alt="">
 
-          </div>
-          <div class="time">
-            2024.04.06
-          </div>
-        </div>
+
       </div>
     </div>
+    <Release></Release>
   </div>
 
 </template>
@@ -95,9 +99,44 @@ import Nav from "./section/nav.vue";
       size: 0.8rem;
     }
     display: flex;
+    align-items: center;
 
     .color {
-      padding-right: 1rem;
+      margin-right: 1rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 0.25rem;
+    }
+
+  }
+
+  .Incomplete {
+    background: #fff0f0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .color {
+      background: #cc5858;
+    }
+  }
+
+  .In_progress {
+    background: #dcf6de;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .color {
+      background: #71ee7b;
+    }
+  }
+
+  .Completed {
+    background: #d9d9d9;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .color {
+      background: #858585;
     }
   }
 
@@ -106,10 +145,13 @@ import Nav from "./section/nav.vue";
   }
 
   .images {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
 
     img {
+      max-width: 30%;
+      margin: 0.5rem;
       border: 1px solid gainsboro;
       border-radius: 0.5rem;
     }

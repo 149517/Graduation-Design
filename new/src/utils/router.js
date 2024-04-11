@@ -11,6 +11,9 @@ import Mine from "../components/pc/Mine.vue";
 import Login from "../components/pc/account/Login.vue";
 import PostDetails from "../components/pc/details/postDetails.vue";
 import Add from "../components/pc/account/Add.vue";
+import helpDetails from "../components/pc/details/helpDetails.vue";
+import activityDetails from "../components/pc/details/activityDetails.vue";
+import goodsDetails from "../components/pc/details/goodsDetails.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -144,6 +147,39 @@ const router = createRouter({
             beforeEnter:(to,from,next)=>{
                 if(window.innerWidth < 768){
                     next('/mobileAdd');
+                }else {
+                    next()
+                }
+            }
+        },
+        {
+            path:'/helpDetails/:hid',
+            component:helpDetails,
+            beforeEnter:(to,from,next)=>{
+                if(window.innerWidth < 768){
+                    next('/mobileHelpDetails/:hid');
+                }else {
+                    next()
+                }
+            }
+        },
+        {
+            path:'/activityDetails/:aid',
+            component:activityDetails,
+            beforeEnter:(to,from,next)=>{
+                if(window.innerWidth < 768){
+                    next('/mobileActivityDetails/:aid');
+                }else {
+                    next()
+                }
+            }
+        },
+        {
+            path:'/goodsDetails/:gid',
+            component:goodsDetails,
+            beforeEnter:(to,from,next)=>{
+                if(window.innerWidth < 768){
+                    next('/mobileGoodsDetails/:gid');
                 }else {
                     next()
                 }

@@ -1,6 +1,34 @@
 <script setup>
 
 import Nav from "./section/nav.vue";
+import {onMounted, ref} from "vue";
+import {goodsApi} from "../../utils/api.js";
+import {useRouter} from "vue-router";
+
+const goods = ref([{
+  gid: null,
+  content: null,
+  time: null,
+  price: null,
+  number: 1,
+  images: {
+    image: null,
+    description: null,
+  }
+}])
+
+const getGoods = async () => {
+  const result = await goodsApi.getGoods()
+  console.log(result)
+  goods.value = result.data
+}
+const router = useRouter()
+const openDetails = (gid) =>{
+  router.push(`/goodsDetails/${gid}`)
+}
+onMounted(() => {
+  getGoods()
+})
 </script>
 
 <template>
@@ -19,74 +47,26 @@ import Nav from "./section/nav.vue";
         </div>
       </div>
       <div class="block rightGap">
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/cup.jpg" alt="商品">
+        <div class="box whiteBg border" v-for="item in goods" :key="item.gid" @click="openDetails(item.gid)">
+          <img :src="item.images && item.images.length > 0 ? item.images[0].image : ''"
+               :alt="item.images && item.images.length > 0 ? item.images[0].description : ''"
+               v-if="item.images !== null && item.images.length > 0">
           <div class="info">
             <div class="line">
               <div class="price">
-                <span>￥</span>50
+                <span>￥</span>{{ item.price }}
               </div>
               <div class="name">
-                水杯
+                数量 {{ item.number }}
               </div>
             </div>
 
             <div class="intro">
-              买多了，出一个
+              {{ item.content }}
             </div>
           </div>
         </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/cup.jpg" alt="商品">
-          <div class="info">
-            <div class="line">
-              <div class="price">
-                <span>￥</span>50
-              </div>
-              <div class="name">
-                水杯
-              </div>
-            </div>
 
-            <div class="intro">
-              买多了，出一个
-            </div>
-          </div>
-        </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/cup.jpg" alt="商品">
-          <div class="info">
-            <div class="line">
-              <div class="price">
-                <span>￥</span>50
-              </div>
-              <div class="name">
-                水杯
-              </div>
-            </div>
-
-            <div class="intro">
-              买多了，出一个
-            </div>
-          </div>
-        </div>
-        <div class="box whiteBg border">
-          <img src="../../assets/images/Activity/cup.jpg" alt="商品">
-          <div class="info">
-            <div class="line">
-              <div class="price">
-                <span>￥</span>50
-              </div>
-              <div class="name">
-                水杯
-              </div>
-            </div>
-
-            <div class="intro">
-              买多了，出一个
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -102,34 +82,45 @@ import Nav from "./section/nav.vue";
   gap: 1.11rem;
   grid-template-columns: 1fr 1fr 1fr;
 }
-.box{
+
+.box {
   border-radius: 0.55rem;
-  img{
+
+  img {
     width: 100%;
     //height: 11.11rem;
     border-top-left-radius: 0.55rem;
     border-top-right-radius: 0.55rem;
     border-bottom: 1px solid gainsboro;
   }
-  .info{
-    .line{
+
+  .info {
+    .line {
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    .price{
+
+    .price {
       line-height: 1.8rem;
-      span{
-        color: orange;
+      background: orange;
+      border-radius: 0.5rem;
+      color: white;
+      margin: 0 0.8rem;
+      padding: 0 0.5rem;
+
+      span {
+        color: #e1e1e1;
         font: {
           weight: bold;
           size: 1.2rem;
         };
       }
     }
-    .intro{
+
+    .intro {
       padding: 0 0.55rem 0.55rem;
-      font-size: 0.8rem;
+      margin:1rem 0.5rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;

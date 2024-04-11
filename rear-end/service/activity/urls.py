@@ -4,8 +4,8 @@ from . import views
 
 urlpatterns = [
     path('all', views.all_view),
-    path('by', views.get_help_by_hid),
-    path('add_help', views.add_view),
+    path('by', views.get_activity_by_aid),
+    path('add_activity', views.add_view),
     # path('like', views.like_post),
     # path('collect', views.collect_post),
     # path('comment', views.get_post_comments),

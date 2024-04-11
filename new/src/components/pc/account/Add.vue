@@ -4,7 +4,7 @@ import Nav from "../section/nav.vue";
 import ImageUpload from "../section/imageUpload.vue";
 import {ref} from "vue";
 import store from "../../../utils/store.js";
-import {postApi} from "../../../utils/api.js";
+import {helpApi, postApi} from "../../../utils/api.js";
 import {useRouter} from "vue-router";
 
 
@@ -53,11 +53,15 @@ const fileUpload = async () => {
   let result = null;
   if(fileList.value.type === 'post'){
     result = await postApi.fileUpload(fileList.value)
+    alert(result.message)
+  }
+  if(fileList.value.type === 'help'){
+    result = await helpApi.fileUpload(fileList.value)
+    alert(result.message)
   }
 
   console.log(result)
 
-  alert(result.message)
   // 刷新页面
   setTimeout(()=>{
     router.go(0)
