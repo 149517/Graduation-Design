@@ -4,19 +4,50 @@ import Nav from "../section/nav.vue";
 import ImageUpload from "../section/imageUpload.vue";
 import {ref} from "vue";
 import store from "../../../utils/store.js";
-import {helpApi, postApi} from "../../../utils/api.js";
+import {activityApi, goodsApi, helpApi, postApi} from "../../../utils/api.js";
 import {useRouter} from "vue-router";
+import {notification} from "ant-design-vue";
 
 
 const router = useRouter()
 const content = ref(null)
+const price = ref(null)
+const type = ref(null)
 
+const activity = ref(false)
+const goods = ref(false)
 
 const fileList = ref({
   content: null,
   type: null,
-  images: []
+  images: [],
+  a_type: null,
+  price: null,
 })
+
+const openNotificationWithIcon = type => {
+  let message = '';
+  let description = '';
+
+  if (type === 'success') {
+    message = 'Success';
+    description = '内容发布成功.';
+  } else if (type === 'info') {
+    message = '未填写';
+    description = '内容不能为空.';
+  } else if (type === 'warning') {
+    message = '内容未填写';
+    description = '商品价格为不能空';
+  } else if (type === 'error') {
+    message = 'Error';
+    description = '添加失败.';
+  }
+
+  notification[type]({
+    message: message,
+    description: description
+  });
+};
 
 
 const clear = () => {
@@ -24,9 +55,19 @@ const clear = () => {
   store.commit('changeSend', false)
 }
 
+// image 是否上传图片，点击即为上传
+const image = ref(false)
+const getImage = () => {
+  image.value = true
+}
 // 修改sending的值，触发子组件向父组件传值，然后发送请求
 const fixValue = () => {
-  store.commit('changeSend', true)
+  if (image.value === true) {
+    console.log(store.state.send)
+    store.commit('changeSend', true)
+  } else {
+    fileUpload()
+  }
 }
 
 
@@ -37,35 +78,76 @@ const handleSending = (value) => {
     // console.log(item.thumbUrl)
     fileList.value.images.push(item.thumbUrl)
   })
-  fileList.value.content = content.value
   fileUpload()
 }
 const handleSelectChange = (value) => {
   console.log("类型")
   console.log('Selected value:', value);
+  if (value === 'goods') {
+    goods.value = true
+    activity.value = false
+  }
+  if (value === 'activity') {
+    activity.value = true
+    goods.value = false
+  }
   // 在这里处理选中的值
   fileList.value.type = value
   // console.log(fileList.value)
 }
 const fileUpload = async () => {
+  fileList.value.content = content.value
+  if (!content.value) {
+    openNotificationWithIcon('info')
+    return null
+  }
+  if (!fileList.value.type) {
+    openNotificationWithIcon('info')
+    return null
+  }
   console.log(fileList.value)
 
   let result = null;
-  if(fileList.value.type === 'post'){
-    result = await postApi.fileUpload(fileList.value)
-    alert(result.message)
-  }
-  if(fileList.value.type === 'help'){
-    result = await helpApi.fileUpload(fileList.value)
-    alert(result.message)
-  }
+  try {
+    let result = null;
+    if (fileList.value.type === 'post') {
+      result = await postApi.fileUpload(fileList.value);
+    } else if (fileList.value.type === 'help') {
+      result = await helpApi.fileUpload(fileList.value);
+    } else if (fileList.value.type === 'activity') {
+      fileList.value.a_type = type.value;
+      result = await activityApi.fileUpload(fileList.value);
+    } else if (fileList.value.type === 'goods') {
+      if (!price.value) {
+        openNotificationWithIcon('warning');
+        // 重置状态，使按钮再次可点击
+        store.commit('changeSend', true);
+        return null;
+      }
+      fileList.value.price = price.value;
+      result = await goodsApi.fileUpload(fileList.value);
+      alert(result.message);
+    }
 
+    openNotificationWithIcon('success');
+    console.log(result);
+
+    // 刷新页面
+    setTimeout(() => {
+      router.go(0);
+    }, 500);
+  } catch (error) {
+    console.error("数据提交失败：", error);
+    openNotificationWithIcon('error');
+    // 重置状态，使按钮再次可点击
+    clear()
+  }
   console.log(result)
 
   // 刷新页面
-  setTimeout(()=>{
+  setTimeout(() => {
     router.go(0)
-  },1500)
+  }, 500)
 
 }
 
@@ -90,14 +172,28 @@ const fileUpload = async () => {
       <div class="block rightGap">
         <textarea id="text" v-model="content"></textarea>
         <div class="img">
-          <ImageUpload @sending="handleSending"></ImageUpload>
+          <ImageUpload @click="getImage" @sending="handleSending"></ImageUpload>
         </div>
         <div class="type">
           发布为：
           <Select @selectChange="handleSelectChange"></Select>
         </div>
+        <div class="type price" v-if="goods">
+          价格：<input type="text" v-model.number="price">
+        </div>
+        <div class="type" v-if="activity">
+          类型：
+          <label>
+            <input type="radio" v-model="type" :value="1">
+            游戏
+          </label>
+          <label>
+            <input type="radio" v-model="type" :value="0">
+            活动
+          </label>
+        </div>
         <div class="btn">
-          <button @click="fixValue">发布</button>
+          <button @click="fixValue()">发布</button>
         </div>
 
       </div>
@@ -121,7 +217,21 @@ const fileUpload = async () => {
 }
 
 .type {
-  margin: 1rem 0.5rem;
+  margin: 1.5rem 0.5rem;
+
+  label {
+    margin-right: 2rem;
+  }
+}
+
+.price {
+  input {
+    border-radius: 0.5rem;
+    height: 40px;
+    line-height: 40px;
+    outline: none;
+    padding: 0 0.5rem;
+  }
 }
 
 .btn {

@@ -23,6 +23,18 @@ const getHelps = async () => {
   const result = await helpApi.getHelps()
   console.log(result)
   helps.value = result.data
+  // 对 helps 进行排序
+  helps.value.sort((a, b) => {
+    // 按 status 排序
+    const statusOrder = { 1: 0, 0: 1, '-1': 2 };
+    const statusDiff = statusOrder[a.status] - statusOrder[b.status];
+    if (statusDiff !== 0) {
+      return statusDiff;
+    }
+
+    // 如果 status 相同，则按时间排序
+    return b.time - a.time;
+  });
 }
 const router = useRouter()
 const openDetails = (hid) =>{
@@ -111,7 +123,7 @@ onMounted(() => {
   }
 
   .Incomplete {
-    background: #fff0f0;
+    background: #fff7f7;
     padding: 1rem;
     border-radius: 0.5rem;
 
@@ -121,7 +133,7 @@ onMounted(() => {
   }
 
   .In_progress {
-    background: #dcf6de;
+    background: #f6fff7;
     padding: 1rem;
     border-radius: 0.5rem;
 

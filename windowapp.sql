@@ -11,7 +11,7 @@
  Target Server Version : 80035 (8.0.35)
  File Encoding         : 65001
 
- Date: 11/04/2024 11:06:04
+ Date: 14/04/2024 17:21:27
 */
 
 SET NAMES utf8mb4;
@@ -31,14 +31,17 @@ CREATE TABLE `activity_activity`  (
   PRIMARY KEY (`aid`) USING BTREE,
   INDEX `activity_activity_user_id_0667c221_fk_user_userinfo_uid`(`user_id` ASC) USING BTREE,
   CONSTRAINT `activity_activity_user_id_0667c221_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_activity
 -- ----------------------------
-INSERT INTO `activity_activity` VALUES (1, '周末爬山，3个人最好', '2024-04-11 00:44:17.613256', 3, 0, 3);
 INSERT INTO `activity_activity` VALUES (2, '想去自驾，找几个会开车的小伙伴', '2024-04-11 00:44:47.223976', 4, 0, 1);
 INSERT INTO `activity_activity` VALUES (3, '英雄联盟手游5黑，大师最好', '2024-04-11 00:45:30.582869', 5, 1, 4);
+INSERT INTO `activity_activity` VALUES (4, '想打游戏', '2024-04-11 06:27:30.555187', 2, 0, 4);
+INSERT INTO `activity_activity` VALUES (5, '想去海边', '2024-04-13 02:57:29.759685', 2, 0, 4);
+INSERT INTO `activity_activity` VALUES (6, '想去爬山，有没有一起的', '2024-04-14 07:13:29.781140', 2, 0, 3);
+INSERT INTO `activity_activity` VALUES (7, '猫猫交流会', '2024-04-14 07:14:01.422447', 2, 0, 3);
 
 -- ----------------------------
 -- Table structure for activity_activity_images
@@ -60,6 +63,29 @@ CREATE TABLE `activity_activity_images`  (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for activity_discuss
+-- ----------------------------
+DROP TABLE IF EXISTS `activity_discuss`;
+CREATE TABLE `activity_discuss`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `activity_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `activity_discuss_activity_id_7089e37c_fk_activity_activity_aid`(`activity_id` ASC) USING BTREE,
+  INDEX `activity_discuss_user_id_62687205_fk_user_userinfo_uid`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `activity_discuss_activity_id_7089e37c_fk_activity_activity_aid` FOREIGN KEY (`activity_id`) REFERENCES `activity_activity` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `activity_discuss_user_id_62687205_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of activity_discuss
+-- ----------------------------
+INSERT INTO `activity_discuss` VALUES (2, '5黑5黑', '2024-04-12 01:14:34.240397', 3, 3);
+INSERT INTO `activity_discuss` VALUES (3, '我想去', '2024-04-14 07:38:25.943764', 2, 5);
+
+-- ----------------------------
 -- Table structure for activity_images
 -- ----------------------------
 DROP TABLE IF EXISTS `activity_images`;
@@ -72,14 +98,17 @@ CREATE TABLE `activity_images`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `activity_images_activity_id_2026c84f_fk_activity_activity_aid`(`activity_id` ASC) USING BTREE,
   CONSTRAINT `activity_images_activity_id_2026c84f_fk_activity_activity_aid` FOREIGN KEY (`activity_id`) REFERENCES `activity_activity` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of activity_images
 -- ----------------------------
 INSERT INTO `activity_images` VALUES (1, 'static/activity_img/game1.jpg', '手动图片添加', '2024-04-11 08:56:41.000000', 3);
 INSERT INTO `activity_images` VALUES (2, 'static/activity_img/base.jpg', '默认图片', '2024-04-11 09:18:00.000000', 2);
-INSERT INTO `activity_images` VALUES (3, 'static/activity_img/base.jpg', '默认图片', '2024-04-11 09:18:22.000000', 1);
+INSERT INTO `activity_images` VALUES (4, 'static/activity_img/4_4_20240411142730560188.jpg', 'image_0', '2024-04-11 06:27:30.560188', 4);
+INSERT INTO `activity_images` VALUES (5, 'static/activity_img/5_4_20240413105729762687.jpg', 'image_0', '2024-04-13 02:57:29.762687', 5);
+INSERT INTO `activity_images` VALUES (6, 'static/activity_img/6_3_20240414151329784142.jpg', 'image_0', '2024-04-14 07:13:29.785141', 6);
+INSERT INTO `activity_images` VALUES (7, 'static/activity_img/7_3_20240414151401426519.jpg', 'image_0', '2024-04-14 07:14:01.427022', 7);
 
 -- ----------------------------
 -- Table structure for auth_group
@@ -109,7 +138,7 @@ CREATE TABLE `auth_group_permissions`  (
   INDEX `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm`(`permission_id` ASC) USING BTREE,
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of auth_group_permissions
@@ -127,7 +156,7 @@ CREATE TABLE `auth_permission`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `auth_permission_content_type_id_codename_01ab375a_uniq`(`content_type_id` ASC, `codename` ASC) USING BTREE,
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 69 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 93 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of auth_permission
@@ -200,6 +229,30 @@ INSERT INTO `auth_permission` VALUES (65, 'Can add goods', 17, 'add_goods');
 INSERT INTO `auth_permission` VALUES (66, 'Can change goods', 17, 'change_goods');
 INSERT INTO `auth_permission` VALUES (67, 'Can delete goods', 17, 'delete_goods');
 INSERT INTO `auth_permission` VALUES (68, 'Can view goods', 17, 'view_goods');
+INSERT INTO `auth_permission` VALUES (69, 'Can add message', 18, 'add_message');
+INSERT INTO `auth_permission` VALUES (70, 'Can change message', 18, 'change_message');
+INSERT INTO `auth_permission` VALUES (71, 'Can delete message', 18, 'delete_message');
+INSERT INTO `auth_permission` VALUES (72, 'Can view message', 18, 'view_message');
+INSERT INTO `auth_permission` VALUES (73, 'Can add attachment', 19, 'add_attachment');
+INSERT INTO `auth_permission` VALUES (74, 'Can change attachment', 19, 'change_attachment');
+INSERT INTO `auth_permission` VALUES (75, 'Can delete attachment', 19, 'delete_attachment');
+INSERT INTO `auth_permission` VALUES (76, 'Can view attachment', 19, 'view_attachment');
+INSERT INTO `auth_permission` VALUES (77, 'Can add room', 20, 'add_room');
+INSERT INTO `auth_permission` VALUES (78, 'Can change room', 20, 'change_room');
+INSERT INTO `auth_permission` VALUES (79, 'Can delete room', 20, 'delete_room');
+INSERT INTO `auth_permission` VALUES (80, 'Can view room', 20, 'view_room');
+INSERT INTO `auth_permission` VALUES (81, 'Can add shopping cart', 21, 'add_shoppingcart');
+INSERT INTO `auth_permission` VALUES (82, 'Can change shopping cart', 21, 'change_shoppingcart');
+INSERT INTO `auth_permission` VALUES (83, 'Can delete shopping cart', 21, 'delete_shoppingcart');
+INSERT INTO `auth_permission` VALUES (84, 'Can view shopping cart', 21, 'view_shoppingcart');
+INSERT INTO `auth_permission` VALUES (85, 'Can add discuss', 22, 'add_discuss');
+INSERT INTO `auth_permission` VALUES (86, 'Can change discuss', 22, 'change_discuss');
+INSERT INTO `auth_permission` VALUES (87, 'Can delete discuss', 22, 'delete_discuss');
+INSERT INTO `auth_permission` VALUES (88, 'Can view discuss', 22, 'view_discuss');
+INSERT INTO `auth_permission` VALUES (89, 'Can add shopping cart', 23, 'add_shoppingcart');
+INSERT INTO `auth_permission` VALUES (90, 'Can change shopping cart', 23, 'change_shoppingcart');
+INSERT INTO `auth_permission` VALUES (91, 'Can delete shopping cart', 23, 'delete_shoppingcart');
+INSERT INTO `auth_permission` VALUES (92, 'Can view shopping cart', 23, 'view_shoppingcart');
 
 -- ----------------------------
 -- Table structure for django_admin_log
@@ -249,19 +302,24 @@ CREATE TABLE `django_content_type`  (
   `model` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `django_content_type_app_label_model_76bd3d3b_uniq`(`app_label` ASC, `model` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of django_content_type
 -- ----------------------------
 INSERT INTO `django_content_type` VALUES (14, 'activity', 'activity');
+INSERT INTO `django_content_type` VALUES (22, 'activity', 'discuss');
 INSERT INTO `django_content_type` VALUES (15, 'activity', 'images');
 INSERT INTO `django_content_type` VALUES (1, 'admin', 'logentry');
 INSERT INTO `django_content_type` VALUES (3, 'auth', 'group');
 INSERT INTO `django_content_type` VALUES (2, 'auth', 'permission');
+INSERT INTO `django_content_type` VALUES (19, 'chat', 'attachment');
+INSERT INTO `django_content_type` VALUES (18, 'chat', 'message');
+INSERT INTO `django_content_type` VALUES (20, 'chat', 'room');
 INSERT INTO `django_content_type` VALUES (4, 'contenttypes', 'contenttype');
 INSERT INTO `django_content_type` VALUES (17, 'goods', 'goods');
 INSERT INTO `django_content_type` VALUES (16, 'goods', 'images');
+INSERT INTO `django_content_type` VALUES (23, 'goods', 'shoppingcart');
 INSERT INTO `django_content_type` VALUES (12, 'help', 'help');
 INSERT INTO `django_content_type` VALUES (13, 'help', 'images');
 INSERT INTO `django_content_type` VALUES (10, 'post', 'collect');
@@ -270,6 +328,7 @@ INSERT INTO `django_content_type` VALUES (11, 'post', 'images');
 INSERT INTO `django_content_type` VALUES (9, 'post', 'like');
 INSERT INTO `django_content_type` VALUES (7, 'post', 'post');
 INSERT INTO `django_content_type` VALUES (5, 'sessions', 'session');
+INSERT INTO `django_content_type` VALUES (21, 'user', 'shoppingcart');
 INSERT INTO `django_content_type` VALUES (6, 'user', 'userinfo');
 
 -- ----------------------------
@@ -282,7 +341,7 @@ CREATE TABLE `django_migrations`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of django_migrations
@@ -318,6 +377,12 @@ INSERT INTO `django_migrations` VALUES (28, 'help', '0002_rename_post_images_hel
 INSERT INTO `django_migrations` VALUES (29, 'activity', '0001_initial', '2024-04-11 00:42:42.441063');
 INSERT INTO `django_migrations` VALUES (30, 'activity', '0002_alter_images_image', '2024-04-11 01:15:23.069641');
 INSERT INTO `django_migrations` VALUES (31, 'goods', '0001_initial', '2024-04-11 01:50:32.600915');
+INSERT INTO `django_migrations` VALUES (32, 'chat', '0001_initial', '2024-04-11 03:56:28.210429');
+INSERT INTO `django_migrations` VALUES (33, 'activity', '0003_discuss', '2024-04-11 06:57:23.948263');
+INSERT INTO `django_migrations` VALUES (34, 'user', '0004_remove_userinfo_friends_shoppingcart', '2024-04-11 06:57:24.056671');
+INSERT INTO `django_migrations` VALUES (35, 'goods', '0002_shoppingcart', '2024-04-12 01:20:56.232927');
+INSERT INTO `django_migrations` VALUES (36, 'user', '0005_delete_shoppingcart', '2024-04-12 01:20:56.249161');
+INSERT INTO `django_migrations` VALUES (37, 'goods', '0003_remove_goods_number_remove_shoppingcart_quantity_and_more', '2024-04-13 08:07:09.116904');
 
 -- ----------------------------
 -- Table structure for django_session
@@ -335,26 +400,35 @@ CREATE TABLE `django_session`  (
 -- Records of django_session
 -- ----------------------------
 INSERT INTO `django_session` VALUES ('1fbk97p2ayn8o8vuzf5d6jdmrbc4uhhb', '.eJxVjEEOgjAQRe_StWnoOEwHl-45QzO0U0ENJBRWxrtrExa6fe_9_zJB9m0Me9E1TMlcjDOnXzZIfOhcRbrLfFtsXOZtnQZbE3vYYvsl6fN6tH8Ho5Sxrjn6hG6AJra5A_ANIUbFjlgBhXJmgoY98ZcSA-qZxLfgHZIwOvP-AMeBNps:1rKCcZ:r5uL4vvSPNJ7-rKnUPkQDoKcZnaSic8kaDlDeMWycg4', '2024-01-15 07:21:59.475795');
+INSERT INTO `django_session` VALUES ('44k0wx2esuhcsstewbzdn17ppsyx2b5e', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1rvWj0:nOyuVdIaANNQT11K7HDLbGE68k1lwEFWuOw_Y_Jl3aA', '2024-04-27 06:18:54.199958');
 INSERT INTO `django_session` VALUES ('4d5iuojgsqg4rgdwyhtafj8kg7ahepud', 'e30:1ru1wH:JAWVqATt353UTFzK12Ua88uUebT9HGYoY8Yk6mQZPh8', '2024-04-23 03:14:25.026209');
 INSERT INTO `django_session` VALUES ('4pi6dcr6ous53kg2ra08o8eo3k3a0isa', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1ru1xe:hjg9n17rqEu4JXvkZ0wPd7aoxL9w7SryHlcXqI8fOCY', '2024-04-23 03:15:50.925380');
 INSERT INTO `django_session` VALUES ('6hnyq5hd6kkoo6fb7h4qe3l8g2sdpe5a', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ruPON:znhDhTzWiEIlGbkzD1D11cSFoI7WVdSSSdTnVPLtzUw', '2024-04-24 04:16:59.812370');
 INSERT INTO `django_session` VALUES ('83gzghqchhaj8qu9vln4280g0d56wgbw', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1rthaH:9zfkasBFX2Vp3cPNi19nULTiOFgWHBMxfPPAu8PHXv8', '2024-04-22 05:30:21.208376');
 INSERT INTO `django_session` VALUES ('88qfjnncvhcjcwe4etcgdehamz9s8k8l', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru2Fo:_YNNEDXPSL7I5dHXhZ0ERKTWrTyk0qZe4KTapPuWrZQ', '2024-04-23 03:34:36.014167');
+INSERT INTO `django_session` VALUES ('8x465t545hsrijwjlc9at0a2bg2121e2', '.eJxVjMEOwiAQRP-FsyG4LVnq0bvfQHZhkaqBpLQn479Lkx50jm_ezFt52tbstyaLn6O6KKtOv4wpPKXsRXxQuVcdalmXmfWu6KNt-lajvK6H-3eQqeW-TuiiI4dmOMPIEUfDiCIwsaWOBmIgAy5Zm4SHIMkBBEM9iXEyTn2-4_44VA:1rvpX4:IMMC7k59sdNyYWJcKRXl9k4rjnnq_qaNgtjotI64O6E', '2024-04-28 02:23:50.963069');
 INSERT INTO `django_session` VALUES ('8y3wjjfmrd2e47pw7a36g0fop4cqdtjr', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru216:BBgRA84iIqoQkO-CWjVf_gxfbME9eIoZzrphK4wb5UM', '2024-04-23 03:19:24.897523');
 INSERT INTO `django_session` VALUES ('988gz7awtlnqc384j1qr34llx4ebuldm', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1rti3T:cPWajyfcIUy3ibE4dtA0tUbdNkgiZAgVz-Tg2Tlj-pg', '2024-04-22 06:00:31.575287');
+INSERT INTO `django_session` VALUES ('bg719wkpxs8hyqp5zanft222ge0uwcdy', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1rvflr:0RE6bsGjNWZCTrdNBDF09YV3mZE-5G3QROwoJ_APLyQ', '2024-04-27 15:58:27.002020');
 INSERT INTO `django_session` VALUES ('c6d1dh95cwtv4lzbi406gtssgj5l91vx', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ru2N1:vM6xtDPysuciKxOTjVXK153uxsPC3JY0dA2hwNB64Yw', '2024-04-23 03:42:03.023868');
 INSERT INTO `django_session` VALUES ('cpjza5726shh8npv4gev9h8c7gs177ju', 'e30:1rtRRW:561srmleRxScwr8T_Jlph2zdpBwRKIxH9ANcOc9lxTY', '2024-04-21 12:16:14.418785');
 INSERT INTO `django_session` VALUES ('d8ma5h2aruz09he2e2bluls647l53mtm', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1ru1xo:tjcWruVyxGDR3eozmf5QbtQAMDvbDPrHx9h6Yaeu4sY', '2024-04-23 03:16:00.757036');
 INSERT INTO `django_session` VALUES ('ed0uc57jshb3ctbyks27fzpef78s63b3', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ruPJt:rol77o2hddPye1SAO-NKLa1DAabLpGudbQQt8CRCThE', '2024-04-24 04:12:21.522866');
 INSERT INTO `django_session` VALUES ('fxxrj9ftu4c9u7fx6myy5wwk963dm1c9', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ruie0:4F0Uln2OSTFbkwarLvDGw2feHVhk7WXSYLJUmPRlf_0', '2024-04-25 00:50:24.428185');
+INSERT INTO `django_session` VALUES ('gcop25olkb94pfwk6d2whmf0dlvhv8wa', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1runaw:GGYIyyZRIm_ywQR-dxNxlhYP7Hia9dJlTT2ZC1dgT2U', '2024-04-25 06:07:34.080272');
 INSERT INTO `django_session` VALUES ('gu5oz1vg3h35msl5ltj29fq9jthwx4je', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1rtgp4:Z4vDghLk8TxnQLbg45XUbaQGbikf4yKhqldVq5xC6Yc', '2024-04-22 04:41:34.918549');
 INSERT INTO `django_session` VALUES ('gwv5xahmhefzyaxfliejo64w67eknb7a', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1rtRhD:VAwpT-To448C1LTFP1lnkOnqjfQjRRzvoZZTfjRiITw', '2024-04-21 12:32:27.681567');
+INSERT INTO `django_session` VALUES ('h7jn3jqcj9q2ztpn2wjdhweibpn0bw7s', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1rvrL9:1l5YoM_yRlR7q7ZTBziQrpHahpljuOJVI8Y1nsdTMlI', '2024-04-28 04:19:39.778143');
 INSERT INTO `django_session` VALUES ('iz5h356xz0x4jf83254neujnotx94fh1', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ruUZF:6FGaRF41bBKSi_lrVFBGrUDM9RVEoa9kRuH7jgicRsA', '2024-04-24 09:48:33.704907');
 INSERT INTO `django_session` VALUES ('kuaixjhwf2224p59ftxith1n0d65hna3', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ruPMa:7Qx_niCloHtT86G0Ul-KOqerJEaNO5_uaItv10IywLk', '2024-04-24 04:15:08.763949');
+INSERT INTO `django_session` VALUES ('l6fwp7p1hgiyk8knkfa9hkj472zglc6o', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1rvfvS:DwRr9jQjXKd-85O5TOIQARGO6HqPmQUwXO4OXqZnCKY', '2024-04-27 16:08:22.557708');
 INSERT INTO `django_session` VALUES ('l92w89hth26s11tahnaeqa8do6uh0eeo', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ruUYZ:MiQnZ6YjDDu5l01YQ3k8JPaZD48IdXFj2WBNmISO6ss', '2024-04-24 09:47:51.470576');
 INSERT INTO `django_session` VALUES ('mal9bf28zy83b5clueem9gtu9eysp15i', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru2EZ:Am9Bgrz0-GtRc_0HuceNH-D5yJA7pDeHxsG5PZVtXHc', '2024-04-23 03:33:19.483893');
+INSERT INTO `django_session` VALUES ('me96xc8nnts5mf771wemgicbg1xm303n', 'e30:1rv5TA:u7cMz2JlfRGnUw8xgK7n8_Y904k0l8hivF4UmXLNMp0', '2024-04-26 01:12:44.669811');
+INSERT INTO `django_session` VALUES ('ni2l2zwieory20we2hqv8uptx5koa4t5', '.eJxVjMEOwiAQRP-FsyG4LVnq0bvfQHZhkaqBpLQn479Lkx50jm_ezFt52tbstyaLn6O6KKtOv4wpPKXsRXxQuVcdalmXmfWu6KNt-lajvK6H-3eQqeW-TuiiI4dmOMPIEUfDiCIwsaWOBmIgAy5Zm4SHIMkBBEM9iXEyTn2-4_44VA:1rvp9j:94KlXaUEyJD1-vIoWl6Vx0e0yAcOKonkk6_y9WcLBZY', '2024-04-28 01:59:43.706966');
 INSERT INTO `django_session` VALUES ('oen9ky6gq4q6f0xfpya30kt8xs1hn0g1', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru221:aDkV4COY1bL2Gm1poR9V_X4uRZ3HDc6i3rW3MmC_X0A', '2024-04-23 03:20:21.632507');
 INSERT INTO `django_session` VALUES ('pggr0o30fgwdajxn7gdslmrl8jwm40u2', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1ru13U:rvNngco7T4W6E8AXGAxoqYUr4YfEt32EOOq6KKO0A6g', '2024-04-23 02:17:48.295733');
+INSERT INTO `django_session` VALUES ('q6mj9287s4ecb8rqwi85zc9pavsbpkwi', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1rvfwA:bGB1VXyBjtdMi7WtVXfVV18njMrpdhItc-EhEcj6yYQ', '2024-04-27 16:09:06.228224');
 INSERT INTO `django_session` VALUES ('q7bckzh9kxv5s7u6apghctao7xy8yjag', '.eJxVjEEOgjAQRe_StWnoOEwHl-45QzO0U0ENJBRWxrtrExa6fe_9_zJB9m0Me9E1TMlcjDOnXzZIfOhcRbrLfFtsXOZtnQZbE3vYYvsl6fN6tH8Ho5Sxrjn6hG6AJra5A_ANIUbFjlgBhXJmgoY98ZcSA-qZxLfgHZIwOvP-AMeBNps:1rKF0L:YXYNtuk0ifmtUEYy_hVt0erW2OdstMjaBmALugTtNrM', '2024-01-15 09:54:41.370811');
 INSERT INTO `django_session` VALUES ('qrg3a07j6c4fz61jasv8bt2rkwed7pi2', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru2Hk:c5npFDhu57So0TOtf8emI3jNaBauM8uh68dy_KXiGzo', '2024-04-23 03:36:36.308902');
 INSERT INTO `django_session` VALUES ('r6ni2k45nat8lmx072vyx4ajkw6utpdl', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1ruUWv:uwwuceegSGMDUqMYi8_KKn2SCWFHLGFHD66hK9yjZgw', '2024-04-24 09:46:09.865462');
@@ -365,8 +439,12 @@ INSERT INTO `django_session` VALUES ('sae2b0vq9nhx0c5yn0lwinwwfq6d9ku8', '.eJxVj
 INSERT INTO `django_session` VALUES ('sor9b2pjryck9g8dvh2xx3r6sm6owos8', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru221:aDkV4COY1bL2Gm1poR9V_X4uRZ3HDc6i3rW3MmC_X0A', '2024-04-23 03:20:21.685525');
 INSERT INTO `django_session` VALUES ('t97on4uf61nchz140voun5hb91hdcoy3', 'e30:1rtRQH:XWrkPUK56vNvp83WbYzzWpLk77y4JJZdbGePrSAnQIE', '2024-04-21 12:14:57.669467');
 INSERT INTO `django_session` VALUES ('xnf4viyy41xqyfdyq0k8gc22x8a7svuf', '.eJxVjLsOAiEURP-F2hAeywKW9n4DuVwusmogWXYr478ryRbaTDHnzLxYgH0rYe-0hiWxM5Ps9NtFwAfVAdId6q1xbHVbl8iHwg_a-bUlel4O9--gQC_fNeHshLGoJWXlnYmogYxN3jnCSes4UgnIcRZqAkLIWWr0yURpwSr2_gD1zjiN:1ru1yJ:HwQ02hqxQi4RVrcLUW8wIexWqzkRsbBf--2w35--4Js', '2024-04-23 03:16:31.207188');
+INSERT INTO `django_session` VALUES ('xs2x0gtpzlzj9xjj4tis4xm1w827igp7', 'e30:1rv5St:U8ngZ8ZNY-Tz7qApCtkctYcs6OrZQjT9NEqCEOMxeuY', '2024-04-26 01:12:27.431833');
 INSERT INTO `django_session` VALUES ('yrqll6j6oajfz7ehfqvni04eknr1c396', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru2IY:acffffgdJnPBzey44FcKBbqB6vQHaObhbSzmXWWnCt8', '2024-04-23 03:37:26.186618');
 INSERT INTO `django_session` VALUES ('ze91lp8tsbawk5zrjt51814n2n3xcdta', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1ru2G2:rqpXzL018caQc7n3BFlrnG2PNqAvOzN_FEy-ENX6S1A', '2024-04-23 03:34:50.660042');
+INSERT INTO `django_session` VALUES ('zfylnjezl3lobq6z9rezwmwmwykbopoc', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1rungd:8fhTSoaanoLgFgpZlDy79b8M6JSOTjC-f5wOGfhkpxw', '2024-04-25 06:13:27.689495');
+INSERT INTO `django_session` VALUES ('zjmn5658bn4gatwffpddei55f17g8msi', '.eJxVjMsOwiAQRf-FtSE8Bigu3fsNZBimUjU0Ke3K-O_apAvd3nPOfYmE21rT1nlJUxFnAeL0u2WkB7cdlDu22yxpbusyZbkr8qBdXufCz8vh_h1U7PVbRwxWKyoGYMTgBsfK-YwQWUEkglyGSMFaM0I2GcizdmjYWWu9VxrE-wPYbDc6:1rvTBq:vt2o5SEVuuuNndfdI1V9qRDZwfirHeX7f47B1Bn5ikg', '2024-04-27 02:32:26.735162');
+INSERT INTO `django_session` VALUES ('zx01p9udkv9b0buz82wj1b18iirzgfjm', '.eJxVjDsOwjAQBe_iGln-LCympM8ZorV3jQPIluKkQtwdIqWA9s3Me6mR1qWMa5d5nFhdlFeH3y1SekjdAN-p3ppOrS7zFPWm6J12PTSW53V3_w4K9fKtDXmJ3jODw2TRUwpi5RzERARjEwA5i4wuGJePLiCfwIIgYM6WglfvD9ofNz4:1rv5UA:wBWMR4g5V-2qjUVGKJYhlKC2SX4zm9ZLSiXGAngm3_o', '2024-04-26 01:13:46.270616');
 
 -- ----------------------------
 -- Table structure for goods_goods
@@ -376,19 +454,24 @@ CREATE TABLE `goods_goods`  (
   `gid` int NOT NULL AUTO_INCREMENT,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `time` datetime(6) NOT NULL,
-  `number` int NOT NULL,
   `price` decimal(10, 2) NOT NULL,
   `user_id` int NOT NULL,
+  `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`gid`) USING BTREE,
   INDEX `goods_goods_user_id_b4661309_fk_user_userinfo_uid`(`user_id` ASC) USING BTREE,
   CONSTRAINT `goods_goods_user_id_b4661309_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods_goods
 -- ----------------------------
-INSERT INTO `goods_goods` VALUES (1, '水杯，还没用过', '2024-04-11 02:12:42.809812', 1, 22.20, 1);
-INSERT INTO `goods_goods` VALUES (2, '英语学习资料', '2024-04-11 02:13:15.072689', 1, 12.00, 2);
+INSERT INTO `goods_goods` VALUES (1, '水杯，还没用过', '2024-04-11 02:12:42.809812', 22.20, 1, 0);
+INSERT INTO `goods_goods` VALUES (2, '英语学习资料', '2024-04-11 02:13:15.072689', 12.00, 2, 0);
+INSERT INTO `goods_goods` VALUES (3, '壁纸', '2024-04-13 03:04:28.388834', 2.99, 4, 0);
+INSERT INTO `goods_goods` VALUES (5, '收纳盒', '2024-04-14 06:54:33.793293', 38.00, 3, 1);
+INSERT INTO `goods_goods` VALUES (6, '咖啡', '2024-04-14 06:54:59.587362', 23.00, 3, 1);
+INSERT INTO `goods_goods` VALUES (7, '插线板', '2024-04-14 06:55:16.701023', 19.00, 3, 1);
+INSERT INTO `goods_goods` VALUES (8, '化妆品', '2024-04-14 06:55:41.246310', 49.90, 3, 1);
 
 -- ----------------------------
 -- Table structure for goods_goods_images
@@ -422,13 +505,43 @@ CREATE TABLE `goods_images`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `goods_images_goods_id_d09a40fd_fk_goods_goods_gid`(`goods_id` ASC) USING BTREE,
   CONSTRAINT `goods_images_goods_id_d09a40fd_fk_goods_goods_gid` FOREIGN KEY (`goods_id`) REFERENCES `goods_goods` (`gid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods_images
 -- ----------------------------
 INSERT INTO `goods_images` VALUES (1, 'static/goods_pics/cup.jpg', '默认图片', '2024-04-11 10:17:03.000000', 1);
 INSERT INTO `goods_images` VALUES (2, 'static/goods_pics/base.jpg', '默认图片', '2024-04-11 10:17:33.000000', 2);
+INSERT INTO `goods_images` VALUES (3, 'static/goods_pics/3_4_20240413110428392867.jpg', 'image_0', '2024-04-13 03:04:28.393869', 3);
+INSERT INTO `goods_images` VALUES (4, 'static/goods_pics/5_3_20240414145433798760.jpg', 'image_0', '2024-04-14 06:54:33.798760', 5);
+INSERT INTO `goods_images` VALUES (5, 'static/goods_pics/6_3_20240414145459591053.jpg', 'image_0', '2024-04-14 06:54:59.591557', 6);
+INSERT INTO `goods_images` VALUES (6, 'static/goods_pics/7_3_20240414145516704006.jpg', 'image_0', '2024-04-14 06:55:16.704006', 7);
+INSERT INTO `goods_images` VALUES (7, 'static/goods_pics/8_3_20240414145541250973.jpg', 'image_0', '2024-04-14 06:55:41.250973', 8);
+
+-- ----------------------------
+-- Table structure for goods_shoppingcart
+-- ----------------------------
+DROP TABLE IF EXISTS `goods_shoppingcart`;
+CREATE TABLE `goods_shoppingcart`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `price` decimal(10, 2) NOT NULL,
+  `timestamp` datetime(6) NOT NULL,
+  `goods_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `goods_shoppingcart_goods_id_dc0a8abb_fk_goods_goods_gid`(`goods_id` ASC) USING BTREE,
+  INDEX `goods_shoppingcart_user_id_2b0a6087_fk_user_userinfo_uid`(`user_id` ASC) USING BTREE,
+  CONSTRAINT `goods_shoppingcart_goods_id_dc0a8abb_fk_goods_goods_gid` FOREIGN KEY (`goods_id`) REFERENCES `goods_goods` (`gid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `goods_shoppingcart_user_id_2b0a6087_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of goods_shoppingcart
+-- ----------------------------
+INSERT INTO `goods_shoppingcart` VALUES (3, 22.20, '2024-04-13 03:33:38.466411', 1, 4);
+INSERT INTO `goods_shoppingcart` VALUES (6, 12.00, '2024-04-14 07:04:07.966133', 2, 3);
+INSERT INTO `goods_shoppingcart` VALUES (7, 2.99, '2024-04-14 07:04:22.587893', 3, 3);
+INSERT INTO `goods_shoppingcart` VALUES (8, 22.20, '2024-04-14 07:36:02.586126', 1, 3);
 
 -- ----------------------------
 -- Table structure for help_help
@@ -448,8 +561,8 @@ CREATE TABLE `help_help`  (
 -- ----------------------------
 -- Records of help_help
 -- ----------------------------
-INSERT INTO `help_help` VALUES (1, '帮忙做个图', '2024-04-10 11:32:44.744069', 1, 1);
-INSERT INTO `help_help` VALUES (2, '找个人帮忙搬行李', '2024-04-10 11:33:21.750085', 3, -1);
+INSERT INTO `help_help` VALUES (1, '帮忙做个图', '2024-04-10 11:32:44.744069', 1, 0);
+INSERT INTO `help_help` VALUES (2, '找个人帮忙搬行李', '2024-04-10 11:33:21.750085', 3, 0);
 INSERT INTO `help_help` VALUES (3, '帮忙写作业', '2024-04-10 15:20:03.497612', 4, 0);
 INSERT INTO `help_help` VALUES (4, '找个人帮我送个文件', '2024-04-10 15:22:38.614605', 4, 1);
 
@@ -513,7 +626,6 @@ CREATE TABLE `post_collect`  (
 -- Records of post_collect
 -- ----------------------------
 INSERT INTO `post_collect` VALUES (2, '2024-04-10 04:47:32.122576', 3, 1);
-INSERT INTO `post_collect` VALUES (4, '2024-04-10 04:52:22.886558', 3, 2);
 INSERT INTO `post_collect` VALUES (5, '2024-04-11 02:54:10.098085', 4, 16);
 
 -- ----------------------------
@@ -531,16 +643,14 @@ CREATE TABLE `post_comment`  (
   INDEX `post_comment_post_id_ddc2d815_fk_post_post_pid`(`post_id` ASC) USING BTREE,
   CONSTRAINT `post_comment_post_id_ddc2d815_fk_post_post_pid` FOREIGN KEY (`post_id`) REFERENCES `post_post` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `post_comment_user_id_cbfe4e66_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of post_comment
 -- ----------------------------
 INSERT INTO `post_comment` VALUES (1, '天气不错', '2024-04-10 13:21:37.000000', 3, 1);
 INSERT INTO `post_comment` VALUES (2, '起风了', '2024-04-10 06:35:50.924205', 3, 1);
-INSERT INTO `post_comment` VALUES (3, '搜索', '2024-04-10 10:36:25.044686', 4, 15);
-INSERT INTO `post_comment` VALUES (4, '搜索', '2024-04-10 10:36:26.042050', 4, 15);
-INSERT INTO `post_comment` VALUES (5, '冲冲冲', '2024-04-10 10:53:16.301316', 4, 3);
+INSERT INTO `post_comment` VALUES (6, '这个周吗', '2024-04-11 07:25:10.754844', 4, 1);
 
 -- ----------------------------
 -- Table structure for post_images
@@ -555,14 +665,16 @@ CREATE TABLE `post_images`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `post_images_post_id_de04fec2_fk_post_post_pid`(`post_id` ASC) USING BTREE,
   CONSTRAINT `post_images_post_id_de04fec2_fk_post_post_pid` FOREIGN KEY (`post_id`) REFERENCES `post_post` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of post_images
 -- ----------------------------
 INSERT INTO `post_images` VALUES (1, '/static/post_img/01.jpg', '无', '2024-04-08 14:06:11.000000', 1);
-INSERT INTO `post_images` VALUES (2, 'static/post_img/15_4_20240410183431672442.jpg', 'image_0', '2024-04-10 10:34:31.672442', 15);
 INSERT INTO `post_images` VALUES (3, 'static/post_img/16_4_20240410185623533129.jpg', 'image_0', '2024-04-10 10:56:23.533129', 16);
+INSERT INTO `post_images` VALUES (5, 'static/post_img/20_5_20240414102714211319.jpg', 'image_0', '2024-04-14 02:27:14.211319', 20);
+INSERT INTO `post_images` VALUES (6, 'static/post_img/21_3_20240414122110386140.jpg', 'image_0', '2024-04-14 04:21:10.390133', 21);
+INSERT INTO `post_images` VALUES (7, 'static/post_img/22_3_20240414171630198511.jpg', 'image_0', '2024-04-14 09:16:30.198511', 22);
 
 -- ----------------------------
 -- Table structure for post_like
@@ -578,16 +690,19 @@ CREATE TABLE `post_like`  (
   INDEX `post_like_post_id_80ef3233_fk_post_post_pid`(`post_id` ASC) USING BTREE,
   CONSTRAINT `post_like_post_id_80ef3233_fk_post_post_pid` FOREIGN KEY (`post_id`) REFERENCES `post_post` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `post_like_user_id_82e0cc2b_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of post_like
 -- ----------------------------
 INSERT INTO `post_like` VALUES (2, '2024-04-10 04:15:30.360301', 3, 1);
-INSERT INTO `post_like` VALUES (8, '2024-04-10 05:15:48.124421', 3, 2);
 INSERT INTO `post_like` VALUES (9, '2024-04-10 09:48:43.591186', 4, 1);
-INSERT INTO `post_like` VALUES (10, '2024-04-10 10:36:20.844378', 4, 15);
 INSERT INTO `post_like` VALUES (11, '2024-04-10 10:57:42.191918', 4, 16);
+INSERT INTO `post_like` VALUES (12, '2024-04-13 16:08:28.268769', 1, 1);
+INSERT INTO `post_like` VALUES (13, '2024-04-13 16:08:30.163659', 1, 16);
+INSERT INTO `post_like` VALUES (14, '2024-04-14 02:27:23.403020', 5, 20);
+INSERT INTO `post_like` VALUES (15, '2024-04-14 09:16:36.329266', 3, 22);
+INSERT INTO `post_like` VALUES (16, '2024-04-14 09:16:37.474152', 3, 21);
 
 -- ----------------------------
 -- Table structure for post_post
@@ -601,16 +716,18 @@ CREATE TABLE `post_post`  (
   PRIMARY KEY (`pid`) USING BTREE,
   INDEX `post_post_user_id_b9c97aef_fk_user_userinfo_uid`(`user_id` ASC) USING BTREE,
   CONSTRAINT `post_post_user_id_b9c97aef_fk_user_userinfo_uid` FOREIGN KEY (`user_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of post_post
 -- ----------------------------
 INSERT INTO `post_post` VALUES (1, '今天是阴天', '2024-04-08 06:03:31.114630', 1);
-INSERT INTO `post_post` VALUES (2, '今天是4月8号', '2024-04-08 07:35:04.509587', 3);
-INSERT INTO `post_post` VALUES (3, '第一次测试', '2024-04-10 09:49:03.050145', 4);
-INSERT INTO `post_post` VALUES (15, '修改后', '2024-04-10 10:34:31.659924', 4);
 INSERT INTO `post_post` VALUES (16, '页面刷新测试', '2024-04-10 10:56:23.529129', 4);
+INSERT INTO `post_post` VALUES (18, '没有图片', '2024-04-13 17:41:58.353293', 1);
+INSERT INTO `post_post` VALUES (19, '丰富', '2024-04-13 17:42:09.067895', 1);
+INSERT INTO `post_post` VALUES (20, '今天天气真好', '2024-04-14 02:27:14.208241', 5);
+INSERT INTO `post_post` VALUES (21, '阳光大男孩', '2024-04-14 04:21:10.386140', 3);
+INSERT INTO `post_post` VALUES (22, '毕设做完了', '2024-04-14 09:16:30.195051', 3);
 
 -- ----------------------------
 -- Table structure for post_post_images
@@ -653,35 +770,16 @@ CREATE TABLE `user_userinfo`  (
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`uid`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_userinfo
 -- ----------------------------
-INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$PaeXvrzosbA5JgVIIDFFUH$lxcUSW2XA430Bo4ulbhhtX1LolN6/MczcL1LwUnf3EY=', '2024-04-09 03:16:31.204156', 1, 'zeze', '', '', 'xzx149517@126.com', 1, 1, '2024-01-01 07:19:57.324801', '学生', 1, 'static/user_pics/base.jpg', NULL, NULL);
+INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$PaeXvrzosbA5JgVIIDFFUH$lxcUSW2XA430Bo4ulbhhtX1LolN6/MczcL1LwUnf3EY=', '2024-04-13 16:09:06.228224', 1, 'zeze', '', '', 'xzx149517@126.com', 1, 1, '2024-01-01 07:19:57.324801', '学生', 1, 'static/user_pics/base.jpg', NULL, NULL);
 INSERT INTO `user_userinfo` VALUES ('123456', '2024-01-01 09:55:00.000000', 0, 'lisi', '', '', '', 0, 1, '2024-01-01 09:55:00.000000', '学生', 2, 'static/user_pics/表情.jpg', NULL, 'lisi');
-INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$msBsdoRTiez5aE6OLKCM5y$uKqGTcuYOw5W4Fqw6L640kytgFMjLJ/Nuex/Z2d1BkQ=', '2024-04-11 00:50:24.423181', 0, 'zhangsan', '', '', '', 0, 1, '2024-04-07 12:05:00.000000', '学生', 3, 'static/user_pics/01.jpg', NULL, NULL);
-INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$nDw71K0Jnc9NTdW86oNL96$sSPxkFLw8Gs1dSBh8KDCZtBhczimW0VKy0mSBDLciIE=', '2024-04-10 09:48:33.704907', 0, 'lli', '', '', '', 0, 1, '2024-04-09 03:40:21.375758', '学生', 4, 'static/user_pics/base.jpg', NULL, NULL);
-
--- ----------------------------
--- Table structure for user_userinfo_friends
--- ----------------------------
-DROP TABLE IF EXISTS `user_userinfo_friends`;
-CREATE TABLE `user_userinfo_friends`  (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `from_userinfo_id` int NOT NULL,
-  `to_userinfo_id` int NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `user_userinfo_friends_from_userinfo_id_to_user_11e977ac_uniq`(`from_userinfo_id` ASC, `to_userinfo_id` ASC) USING BTREE,
-  INDEX `user_userinfo_friend_to_userinfo_id_58c6f5d9_fk_user_user`(`to_userinfo_id` ASC) USING BTREE,
-  CONSTRAINT `user_userinfo_friend_from_userinfo_id_c4902de2_fk_user_user` FOREIGN KEY (`from_userinfo_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `user_userinfo_friend_to_userinfo_id_58c6f5d9_fk_user_user` FOREIGN KEY (`to_userinfo_id`) REFERENCES `user_userinfo` (`uid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user_userinfo_friends
--- ----------------------------
-INSERT INTO `user_userinfo_friends` VALUES (1, 2, 2);
+INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$msBsdoRTiez5aE6OLKCM5y$uKqGTcuYOw5W4Fqw6L640kytgFMjLJ/Nuex/Z2d1BkQ=', '2024-04-14 04:19:39.775216', 0, 'zhangsan', '', '', '', 0, 1, '2024-04-07 12:05:00.000000', '学生', 3, 'static/user_pics/3_20240414121959928480.jpg', NULL, NULL);
+INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$nDw71K0Jnc9NTdW86oNL96$sSPxkFLw8Gs1dSBh8KDCZtBhczimW0VKy0mSBDLciIE=', '2024-04-13 15:58:27.002020', 0, 'lli', '', '', '', 0, 1, '2024-04-09 03:40:21.375758', '学生', 4, 'static/user_pics/base.jpg', NULL, NULL);
+INSERT INTO `user_userinfo` VALUES ('pbkdf2_sha256$720000$8SLhNOiV58yxmPn6d4gJRu$wg081oINuLGAG5cDL/Am4r3Abdt62EH2mpzo0c7P8dM=', '2024-04-14 02:23:50.957039', 0, 'zhangjiu', '', '', '', 0, 1, '2024-04-14 01:58:56.216224', '学生', 5, 'static/user_pics/5_20240414101839024761.jpg', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for user_userinfo_groups

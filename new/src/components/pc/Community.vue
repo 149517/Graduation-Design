@@ -39,7 +39,17 @@ const getPost = async () => {
   console.log(data.value)
 }
 
-
+const hot = ref([
+  {
+    pid:null,
+    content:null
+  }
+])
+const hotData = async () =>{
+  const res = await postApi.getHosData()
+  console.log(res)
+  hot.value = res.data
+}
 const openDetails = (pid) => {
   router.push(`/postDetails/${pid}`)
 }
@@ -62,6 +72,7 @@ const Collect = async (pid, item) => {
 
 onMounted(() => {
   getPost()
+  hotData()
 })
 </script>
 
@@ -126,30 +137,14 @@ onMounted(() => {
             <h3>热门</h3>
 
             <div class="list">
-              <div class="ll flex">
-                <div class="num">1</div>
+              <div class="ll flex" v-for="(item,index) in hot" :key="item.pid" @click="openDetails(item.pid)">
+                <div class="num">{{ index + 1}}</div>
                 <div class="entry one-line-ellipsis">
-                  清明小长假最后一天
+                  {{ item.content }}
                 </div>
               </div>
-              <div class="ll flex">
-                <div class="num">2</div>
-                <div class="entry one-line-ellipsis">
-                  清明小长假最后一天,清明小长假最后一天
-                </div>
-              </div>
-              <div class="ll flex">
-                <div class="num">3</div>
-                <div class="entry one-line-ellipsis">
-                  清明小长假最后一天
-                </div>
-              </div>
-              <div class="ll flex">
-                <div class="num">4</div>
-                <div class="entry one-line-ellipsis">
-                  清明小长假最后一天
-                </div>
-              </div>
+
+
             </div>
           </div>
           <Release></Release>

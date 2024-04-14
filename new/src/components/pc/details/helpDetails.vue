@@ -7,6 +7,7 @@ import {onMounted, ref} from "vue";
 
 const route = useRoute()
 const hid = ref(null)
+const wechat = ref(false)
 const help = ref({
   hid: null,
   content: null,
@@ -73,12 +74,15 @@ onMounted(() => {
               {{ formatDate(help.time) }}
             </div>
           </div>
-          <div class="btn">
+          <div class="btn" @click="wechat = !wechat">
             <button>联系我</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="wechat" v-if="wechat">
+    <img src="../../../assets/images/WeChat.jpg" alt="">
   </div>
 </template>
 

@@ -15,7 +15,6 @@ class UserInfo(AbstractUser):
     pic = models.ImageField(upload_to='static/user_pics/', default=default_avatar_path, blank=True, null=True)
     url = models.URLField(max_length=200, blank=True, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
-    friends = models.ManyToManyField('self', blank=True)
 
     def __str__(self):
         return self.username

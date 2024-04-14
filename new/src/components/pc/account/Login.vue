@@ -11,6 +11,32 @@ const login = ref(true)
 const route = useRoute()
 const router = useRouter()
 
+// 弹窗提示
+import { notification } from 'ant-design-vue';
+const openNotificationWithIcon = type => {
+  let message = '';
+  let description = '';
+
+  if (type === 'success') {
+    message = '注册成功';
+    description = '正在跳转登录，登录即可查看更多的内容';
+  } else if (type === 'info') {
+    message = '密码错误';
+    description = '两次密码输入不一致';
+  } else if (type === 'warning') {
+    message = '数据格式错误';
+    description = '账户名大于等于3个字符，密码不少于6位';
+  } else if (type === 'error') {
+    message = '信息错误';
+    description = '用户名和密码输入不正确';
+  }
+
+  notification[type]({
+    message: message,
+    description: description
+  });
+};
+
 // 判断当前路径，如果是register 那么就将login改为false
 const getPath = () => {
   if (route.path === '/register') {
@@ -36,14 +62,32 @@ const account = ref(null)
 const password = ref(null)
 const password2 = ref(null)
 
+
 // 登录
 const sign_in = async () => {
-  if (account == null && password == null) {
-    alert('用户名和密码不能为空')
+  if (account.value == null || password.value == null) {
+    openNotificationWithIcon("warning")
     return null
   }
-  const result = await userApi.login(account.value, password.value)
-  console.log(result)
+  if(account.value.length < 3 || password.value.length < 6){
+    openNotificationWithIcon("warning")
+    password.value = null
+    return null
+  }
+  let result = null
+  try {
+    result = await userApi.login(account.value, password.value);
+    // 登录成功的处理逻辑
+    console.log(result);
+  } catch (error) {
+    // 登录失败的处理逻辑
+    console.error("登录失败：", error); // 在控制台打印错误信息
+    // 这里你可以使用前面提到的弹窗提示方法来显示错误信息给用户
+    openNotificationWithIcon('error'); // 调用显示错误提示的函数
+
+    account.value = null
+    password.value = null
+  }
   if (result) {
     console.log(result)
     store.commit('addUser', result.name)
@@ -59,25 +103,37 @@ const sign_in = async () => {
     // 跳转
     setTimeout(() => {
       router.push('/community')
-    }, 1000)
+    }, 500)
 
   }
 }
 
 // 注册
 const sign_up = async () => {
-  if (account == null && password == null && password2 == null) {
-    alert('用户名和密码不能为空')
+  if (account.value == null || password.value == null || password2.value == null) {
+    openNotificationWithIcon("warning")
+    return null
+  }
+  if(account.value.length < 3 || password.value.length < 6 ||  password2.value.length < 6){
+    openNotificationWithIcon("warning")
+    password.value = null
+    password2.value = null
+    return null
+  }
+  if(password.value !== password2.value){
+    openNotificationWithIcon("info")
+    password.value = null
+    password2.value = null
     return null
   }
   const result = await userApi.register(account.value, password.value)
   if (result) {
-    alert("注册成功，去登录吧")
+    openNotificationWithIcon('success')
 
     // 跳转
     setTimeout(() => {
       router.push('/login')
-    }, 1000)
+    }, 500)
   }
 }
 
@@ -102,13 +158,16 @@ onMounted(() => {
           </div>
           欢迎回来
         </div>
+        <div class="text">
+          登录后查看更多内容
+        </div>
         <div class="middle">
-          <input type="text" placeholder="account" v-model="account">
+          <input type="text" placeholder="account" v-model.trim="account">
           <br>
-          <input type="text" placeholder="password" v-model="password">
+          <input type="text" placeholder="password" v-model.trim="password">
         </div>
         <div class="bottom">
-          <button class="themeBtn" @click="sign_in">登录</button>
+          <button class="themeBtn" @click="sign_in" @keydown.enter="sign_in">登录</button>
         </div>
         <div class="tip">
           还没有账号？立刻 <span class="textLink" @click="openPage('register')">注册</span>
@@ -134,14 +193,14 @@ onMounted(() => {
           欢迎加入
         </div>
         <div class="middle">
-          <input type="text" placeholder="account" v-model="account">
+          <input type="text" placeholder="account" v-model.trim="account">
           <br>
-          <input type="text" placeholder="password" v-model="password">
+          <input type="text" placeholder="password" v-model.trim="password">
           <br>
-          <input type="text" placeholder="again password" v-model="password2">
+          <input type="text" placeholder="again password" v-model.trim="password2">
         </div>
         <div class="bottom">
-          <button class="themeBtn" @click="sign_up">注册</button>
+          <button class="themeBtn" @click="sign_up"  @keydown.enter="sign_up">注册</button>
         </div>
         <div class="tip">
           已经有账号？去 <span class="textLink" @click="openPage('login')">登录</span>
@@ -155,6 +214,10 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.text{
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+}
 .login,
 .register {
   display: flex;

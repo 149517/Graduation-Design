@@ -186,3 +186,75 @@ def parse_jwt_token(request):
                 print("找不到用户:", e)
                 return None
     return None
+
+
+def user_help_view(request):
+    if request.method == 'POST':
+        # 获取用户信息
+        user_data = parse_jwt_token(request)
+        if user_data:
+            uid = user_data['uid']
+            username = user_data['username']
+            # 查询指定用户的所有帖子数据
+            use_help = Help.objects.filter(user_id=uid)
+            # 创建一个空列表，用于存储每个帖子的数据
+            data = []
+            # 遍历用户的每个帖子，获取帖子及其关联数据，并添加到 posts_data 列表中
+            for help in use_help:
+                # 获取帖子数据
+                help_data = {
+                    'hid': help.hid,
+                    'content': help.content,
+                    'time': help.time,
+                    'status': help.status
+                }
+                # 获取帖子关联的第一个图片数据
+                images = help.image_set.filter().first()  # 获取查询集合中的第一个图片对象
+                print("images", images)
+                if images:
+                    # 如果有第一个图片数据，则设置帖子数据中的图片字段
+                    image_data = {
+                        'image': "http://localhost:8000/" + str(images.image),
+                        'description': images.description,
+                        'upload_time': images.upload_time
+                    }
+                    help_data['image'] = image_data
+
+                # 将帖子数据添加到 data 列表中
+                data.append(help_data)
+            # 返回 JSON 响应
+            return JsonResponse({'status': 'success', 'data': data}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': '用户未登录'}, status=401)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def change_status_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        hid = data.get('hid')
+        status = data.get('status', 1)
+
+        # 获取用户信息
+        user_data = parse_jwt_token(request)
+        if not user_data:
+            return JsonResponse({'status': 'error', 'message': '用户未登录'}, status=401)
+
+        try:
+            # 查询获取当前用户对象
+            current_user = UserInfo.objects.get(pk=user_data['uid'])
+
+            # 获取帖子对象
+            help_obj = Help.objects.get(pk=hid, user=current_user)
+
+            # 修改帖子status并保存
+            help_obj.status = status
+            help_obj.save()
+
+            # 返回添加成功的响应
+            return JsonResponse({'status': 'success', 'message': '转态修改成功'}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)

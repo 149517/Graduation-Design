@@ -4,9 +4,11 @@ import Nav from "./section/nav.vue";
 import {onMounted, ref} from "vue";
 import {goodsApi} from "../../utils/api.js";
 import {useRouter} from "vue-router";
+import Release from "./section/release.vue";
 
 const goods = ref([{
   gid: null,
+  active:true,
   content: null,
   time: null,
   price: null,
@@ -20,7 +22,8 @@ const goods = ref([{
 const getGoods = async () => {
   const result = await goodsApi.getGoods()
   console.log(result)
-  goods.value = result.data
+  // 判断数据中的 active 字段，只添加 active 为 true 的数据到 goods.value
+  goods.value = result.data.filter(item => item.active === true)
 }
 const router = useRouter()
 const openDetails = (gid) =>{
@@ -47,29 +50,33 @@ onMounted(() => {
         </div>
       </div>
       <div class="block rightGap">
-        <div class="box whiteBg border" v-for="item in goods" :key="item.gid" @click="openDetails(item.gid)">
-          <img :src="item.images && item.images.length > 0 ? item.images[0].image : ''"
-               :alt="item.images && item.images.length > 0 ? item.images[0].description : ''"
-               v-if="item.images !== null && item.images.length > 0">
-          <div class="info">
-            <div class="line">
-              <div class="price">
-                <span>￥</span>{{ item.price }}
-              </div>
-              <div class="name">
-                数量 {{ item.number }}
-              </div>
-            </div>
+        <div class="box" v-for="item in goods" :key="item.gid">
+          <div class="in whiteBg border" @click="openDetails(item.gid)">
 
-            <div class="intro">
-              {{ item.content }}
+            <img :src="item.images && item.images.length > 0 ? item.images[0].image : ''"
+                 :alt="item.images && item.images.length > 0 ? item.images[0].description : ''"
+                 v-if="item.images !== null && item.images.length > 0">
+            <div class="info">
+              <div class="line">
+                <div class="price">
+                  <span>￥</span>{{ item.price }}
+                </div>
+                <div class="name">
+                </div>
+              </div>
+
+              <div class="intro">
+                {{ item.content }}
+              </div>
             </div>
           </div>
+
         </div>
 
       </div>
     </div>
   </div>
+  <Release></Release>
 </template>
 
 <style scoped lang="scss">
@@ -83,7 +90,7 @@ onMounted(() => {
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.box {
+.in{
   border-radius: 0.55rem;
 
   img {
@@ -96,9 +103,10 @@ onMounted(() => {
 
   .info {
     .line {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      margin: 0.5rem 0;
+      //display: flex;
+      //justify-content: center;
+      //align-items: center;
     }
 
     .price {
@@ -108,6 +116,7 @@ onMounted(() => {
       color: white;
       margin: 0 0.8rem;
       padding: 0 0.5rem;
+      width: 5rem;
 
       span {
         color: #e1e1e1;

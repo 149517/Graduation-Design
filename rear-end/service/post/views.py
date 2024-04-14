@@ -10,6 +10,7 @@ from datetime import datetime
 
 from post.models import Post, Images, Like, Collect, Comment
 from user.models import UserInfo
+from django.core import serializers
 
 
 # Create your views here.
@@ -375,3 +376,176 @@ def parse_jwt_token(request):
                 print("找不到用户:", e)
                 return None
     return None
+
+
+def user_posts_view(request):
+    if request.method == 'POST':
+        # 获取用户信息
+        user_data = parse_jwt_token(request)
+        if user_data:
+            uid = user_data['uid']
+            username = user_data['username']
+            # 查询指定用户的所有帖子数据
+            user_posts = Post.objects.filter(user_id=uid)
+            # 创建一个空列表，用于存储每个帖子的数据
+            posts_data = []
+            # 遍历用户的每个帖子，获取帖子及其关联数据，并添加到 posts_data 列表中
+            for post in user_posts:
+                # 获取帖子数据
+                post_data = {
+                    'pid': post.pid,
+                    'content': post.content,
+                    'time': post.time,
+                    'image': None
+                }
+                # 获取帖子关联的第一个图片数据
+                images = post.image_set.filter().first()  # 获取查询集合中的第一个图片对象
+                print("images", images)
+                if images:
+                    # 如果有第一个图片数据，则设置帖子数据中的图片字段
+                    image_data = {
+                        'image': "http://localhost:8000/" + str(images.image),
+                        'description': images.description,
+                        'upload_time': images.upload_time
+                    }
+                    post_data['image'] = image_data
+                # 将帖子数据添加到 posts_data 列表中
+                posts_data.append(post_data)
+            # 返回 JSON 响应
+            return JsonResponse({'status': 'success', 'data': posts_data}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': '用户未登录'}, status=401)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def user_liked_posts_view(request):
+    if request.method == 'POST':
+        # 获取用户信息
+        user_data = parse_jwt_token(request)
+        if user_data:
+            uid = user_data['uid']
+            # 查询用户点赞过的所有帖子数据
+            liked_posts = Like.objects.filter(user_id=uid).select_related('post').values('post__pid', 'post__content',
+                                                                                         'created_at')
+            # 创建一个空列表，用于存储每个帖子的数据
+            liked_posts_data = []
+            # 遍历点赞过的帖子数据
+            for post in liked_posts:
+                # 重新命名字段名称并创建帖子数据字典
+                post_data = {
+                    'pid': post['post__pid'],
+                    'content': post['post__content'],
+                    'time': post['created_at'],
+                }
+                # 将帖子数据添加到列表中
+                liked_posts_data.append(post_data)
+                # 获取帖子关联的图片数据
+                post_images = Post.objects.get(pid=post['post__pid']).image_set.all()
+                # 取第一个图片数据
+                if post_images:
+                    first_image_data = post_images.first()
+                    # 添加第一个图片的路径到帖子数据中
+                    post_data['first_image'] = "http://localhost:8000" + first_image_data.image.url
+            # 返回 JSON 响应
+            return JsonResponse({'status': 'success', 'data': liked_posts_data}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': '用户未登录'}, status=401)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def user_collected_posts_view(request):
+    if request.method == 'POST':
+        # 获取用户信息
+        user_data = parse_jwt_token(request)
+        if user_data:
+            uid = user_data['uid']
+            # 查询用户点赞过的所有帖子数据
+            collected_posts = Collect.objects.filter(user_id=uid).select_related('post').values('post__pid',
+                                                                                                'post__content',
+                                                                                                'created_at')
+            # 创建一个空列表，用于存储每个帖子的数据
+            collect_post_data = []
+            # 遍历点赞过的帖子数据
+            for post in collected_posts:
+                # 重新命名字段名称并创建帖子数据字典
+                post_data = {
+                    'pid': post['post__pid'],
+                    'content': post['post__content'],
+                    'time': post['created_at'],
+                }
+                # 将帖子数据添加到列表中
+                collect_post_data.append(post_data)
+                # 获取帖子关联的图片数据
+                post_images = Post.objects.get(pid=post['post__pid']).image_set.all()
+                # 取第一个图片数据
+                if post_images:
+                    first_image_data = post_images.first()
+                    # 添加第一个图片的路径到帖子数据中
+                    post_data['first_image'] = "http://localhost:8000" + first_image_data.image.url
+            # 返回 JSON 响应
+            return JsonResponse({'status': 'success', 'data': collect_post_data}, status=200)
+        else:
+            return JsonResponse({'status': 'error', 'message': '用户未登录'}, status=401)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def delete_post_by_pid(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        # 获取 pid 参数
+        pid = data.get('pid')
+
+        user_data = parse_jwt_token(request)
+        uid = user_data.get('uid') if user_data else None
+
+        try:
+            post = Post.objects.get(pid=pid)
+
+            # 只有帖子作者或者管理员才能删除帖子
+            if uid == post.user_id or user_data.get('is_admin'):
+
+                # 删除帖子的点赞记录
+                Like.objects.filter(post=post).delete()
+                Collect.objects.filter(post=post).delete()
+                Images.objects.filter(post=post).delete()
+
+                # 删除帖子的评论
+                Comment.objects.filter(post=post).delete()
+
+                # 删除帖子
+                post.delete()
+                # 构造响应数据
+                response_data = {
+                    'status': 'success',
+                    'message': '帖子删除成功'
+                }
+                return JsonResponse(response_data, status=200)
+            else:
+                return JsonResponse({'status': 'error', 'message': '没有权限删除该帖子'}, status=403)
+        except Post.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': '帖子不存在'}, status=404)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def hot_view(request):
+    if request.method == 'GET':
+        # 获取最近发布的十个帖子，只保留 pid、content 和 time 三个参数
+        recent_posts = Post.objects.order_by('-time').values('pid', 'content', 'time')[:10]
+
+        # 构建一个包含所需数据的 JSON 对象
+        posts_data = []
+        for post in recent_posts:
+            post_data = {
+                'pid': post['pid'],
+                'content': post['content'],
+                'time': post['time'].strftime('%Y-%m-%d %H:%M:%S')  # 将时间格式化为字符串
+            }
+            posts_data.append(post_data)
+        # 返回 JSON 响应
+        return JsonResponse({'status': 'success', 'data': posts_data}, status=200)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)

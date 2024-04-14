@@ -11,6 +11,8 @@ const store = createStore({
             career:null,
             // 内容发布
             send:false,
+
+            currentPage:"我的账户"
         }
     },
     mutations: {
@@ -31,6 +33,9 @@ const store = createStore({
         },
         changeSend(state,value){
             state.send = value
+        },
+        changeCurrentPage(state,value){
+            state.currentPage = value
         }
     }
 })

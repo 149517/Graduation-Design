@@ -38,6 +38,7 @@ onMounted(() => {
 import Nav from "./section/nav.vue";
 import {activityApi} from "../../utils/api.js";
 import {useRouter} from "vue-router";
+import Release from "./section/release.vue";
 </script>
 
 <template>
@@ -83,6 +84,7 @@ import {useRouter} from "vue-router";
       </div>
     </div>
   </div>
+  <Release></Release>
 </template>
 
 <style scoped lang="scss">
@@ -99,10 +101,11 @@ import {useRouter} from "vue-router";
 .box {
   width: 100%;
   border-radius: 0.5rem;
+  min-height: 21.1rem;
 
   img {
     width: 100%;
-    max-height: 21.1rem;
+    min-height: 21.1rem;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
   }

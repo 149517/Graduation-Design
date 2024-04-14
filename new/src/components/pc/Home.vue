@@ -66,13 +66,13 @@ import NavLine from "./section/nav-line.vue";
         <div class="left">
           <div class="decline">
           <h1>
-            像其他社交软件<br>
-            一样和校内的<br>
-            同学聊天
+            浏览校园内同学的帖子<br>
+            可以参与讨论<br>
+            发表自己的观点
           </h1>
           <br>
-          <button @click="this.$router.push('/chat')">
-            进入聊天
+          <button @click="this.$router.push('/community')">
+            进入社区
           </button>
           </div>
         </div>

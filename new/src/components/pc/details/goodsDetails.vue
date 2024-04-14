@@ -7,6 +7,7 @@ import {onMounted, ref} from "vue";
 
 const route = useRoute()
 const gid = ref(null)
+const wechat = ref(false)
 const data = ref({
   gid: null,
   content: null,
@@ -29,6 +30,19 @@ const getGoods = async () => {
 }
 const router = useRouter()
 
+// 添加购物车
+const addShoppingCart = async () => {
+  let quantity = 1
+  const result = await goodsApi.addShoppingCart(gid.value, quantity)
+  // console.log(result)
+
+  if (result.response) {
+    alert(result.response.data.message)
+  } else {
+    alert(result.message)
+  }
+
+}
 onMounted(() => {
   gid.value = route.params.gid
   getGoods()
@@ -74,12 +88,15 @@ onMounted(() => {
             </div>
           </div>
           <div class="btn">
-            <button>联系我</button>
-            <button>加入购物车</button>
+            <button @click="wechat = !wechat">联系我</button>
+            <button @click="addShoppingCart">加入购物车</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div class="wechat" v-if="wechat">
+    <img src="../../../assets/images/WeChat.jpg" alt="">
   </div>
 </template>
 
@@ -88,6 +105,7 @@ onMounted(() => {
   padding: 1rem;
   border-radius: 0.5rem;
 }
+
 .userInfo {
   $height: 2.78rem;
   align-items: center;
@@ -111,11 +129,14 @@ onMounted(() => {
     font-size: 1.2rem;
   }
 }
-.goods{
+
+.goods {
   margin: 2rem 0;
-  .text{
+
+  .text {
 
   }
+
   .images {
     display: flex;
     align-items: center;
@@ -129,17 +150,20 @@ onMounted(() => {
       margin: 0.5rem;
     }
   }
+
   .time {
     color: #8d8d8d;
     text-align: right;
   }
 }
-.btn{
+
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
-  button{
+
+  button {
     margin-left: 2rem;
   }
 }

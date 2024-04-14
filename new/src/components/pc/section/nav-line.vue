@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const link = ref([
   {
@@ -20,12 +20,12 @@ const link = ref([
     link: '/help',
     active: false
   },
-  {
-    id: 4,
-    name: '聊天',
-    link: '/chat',
-    active: false
-  },
+  // {
+  //   id: 4,
+  //   name: '聊天',
+  //   link: '/chat',
+  //   active: false
+  // },
   {
     id: 5,
     name: '活动',
@@ -37,14 +37,28 @@ const link = ref([
     name: '购物',
     link: '/shopping',
     active: false
-  },
-  {
-    id: 7,
-    name: '登录',
-    link: '/login',
-    active: false
   }
 ])
+
+const toggle = ref(false)
+
+const login = {
+  name: '登录',
+  link: '/login',
+  active: false
+
+}
+const account = {
+  name: "我的账户",
+  link: '/mine',
+  active: false
+}
+onMounted(()=>{
+  let token = localStorage.getItem('token')
+  if(token){
+    toggle.value = true
+  }
+})
 </script>
 
 <template>
@@ -59,42 +73,58 @@ const link = ref([
             {{ item.name }}
           </router-link>
         </div>
+        <div class="li" v-if="!toggle">
+          <router-link :to="login.link" :class="{active:login.active}">
+            {{ login.name }}
+          </router-link>
+        </div>
+        <div class="li" v-else>
+          <router-link :to="account.link" :class="{active:account.active}">
+            {{ account.name }}
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.active{
+.active {
   font-weight: bold;
 }
-.nav{
+
+.nav {
   padding-top: 0.27rem;
   width: 100%;
   height: 3rem;
   border-bottom: 1px solid #dadada;
 }
-.in{
+
+.in {
   width: 80%;
   margin: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.logo{
-  img{
+
+.logo {
+  img {
     width: 3rem;
     height: 3rem;
 
   }
 }
-.link{
+
+.link {
   display: flex;
-  .li{
-    width: 3.5rem;
+
+  .li {
+    width: 4rem;
     height: 3rem;
     line-height: 3rem;
-    a{
+
+    a {
       font-size: 1rem;
     }
   }

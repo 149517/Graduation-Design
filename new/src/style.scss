@@ -1,4 +1,3 @@
-
 //共用的颜色以及样式文件
 
 //约束
@@ -28,35 +27,40 @@
 
 
 //样式
-*{
+* {
   margin: 0;
   padding: 0;
 }
-.flex{
+
+.flex {
   display: flex;
 }
-.flex-center{
+
+.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-a{
+
+a {
   text-decoration: none;
   color: black;
 }
-.border{
+
+.border {
   border: 1px solid gainsboro;
 }
 
 
 // 颜色
-.bg{
+.bg {
   background: #f7f7f7;
-  .whiteBg{
+
+  .whiteBg {
     background: white;
   }
 
-  button{
+  button {
     background: #000000;
     outline: none;
     width: 9.2rem;
@@ -68,34 +72,41 @@ a{
     font-size: 1.2rem;
   }
 }
+
 // 文字链接样式
-.textLink{
+.textLink {
   color: #529dd3;
   cursor: pointer;
 }
+
 // 主题色背景
-.themeBtn{
+.themeBtn {
   background: #D5E80E;
 }
-.homeBg{
+
+.homeBg {
   background: #fff;
 }
+
 // 左右布局下，右侧内容公共样式
 .contain {
   margin-top: 1.2rem;
 }
+
 .block {
   margin-top: 1.2rem;
 }
-.pointer{
+
+.pointer {
   cursor: pointer;
 }
 
 //左右布局页面，设置导航和内容平行，并固定
-.container{
+.container {
   display: flex;
-  $navWidth:14rem;
-  .nav{
+  $navWidth: 14rem;
+
+  .nav {
     width: $navWidth;
     height: 100vh;
     position: relative;
@@ -103,24 +114,27 @@ a{
     left: 0;
     //background: azure;
   }
-  .contain{
+
+  .contain {
     width: calc(100% - $navWidth);
   }
 }
 
 // 页面头部标题和搜索框
-$rightGap:1.2rem;
+$rightGap: 1.2rem;
 
-.head{
+.head {
   width: calc(100% - $rightGap);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .search{
-    $Height:2.5rem;
+
+  .search {
+    $Height: 2.5rem;
     display: flex;
     align-items: center;
-    input{
+
+    input {
       box-sizing: border-box;
       width: 12rem;
       padding: 0 0.5rem;
@@ -129,7 +143,8 @@ $rightGap:1.2rem;
       border: 1px solid gainsboro;
       outline: none;
     }
-    button{
+
+    button {
       width: 5.5rem;
       height: $Height;
       border-radius: 0.4rem;
@@ -139,7 +154,8 @@ $rightGap:1.2rem;
     }
   }
 }
-.rightGap{
+
+.rightGap {
   margin-right: $rightGap;
 }
 
@@ -149,4 +165,28 @@ $rightGap:1.2rem;
   /* 超出部分使用省略号 */
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.wechat {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 20rem;
+  height: 20rem;
+  border-radius: 1rem;
+  background: white;
+  box-shadow: 1px 1px 10px silver;
+
+
+  img {
+    margin: 1rem;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 1rem;
+  }
+}
+.search{
+  opacity: 0;
 }

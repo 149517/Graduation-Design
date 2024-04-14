@@ -10,4 +10,9 @@ urlpatterns = [
     path('collect', views.collect_post),
     path('comment', views.get_post_comments),
     path('add_comment', views.add_comment),
+    path('userPost', views.user_posts_view),
+    path('userLike', views.user_liked_posts_view),
+    path('userCollect', views.user_collected_posts_view),
+    path('deletePost', views.delete_post_by_pid),
+    path('hot', views.hot_view),
 ]

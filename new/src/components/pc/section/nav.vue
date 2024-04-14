@@ -24,13 +24,13 @@ const link = ref([
     icon: '/src/assets/icon/cooperation.png',
     active: false
   },
-  {
-    id: 4,
-    name: '聊天',
-    link: '/chat',
-    icon: '/src/assets/icon/chat.png',
-    active: false
-  },
+  // {
+  //   id: 4,
+  //   name: '聊天',
+  //   link: '/chat',
+  //   icon: '/src/assets/icon/chat.png',
+  //   active: false
+  // },
   {
     id: 5,
     name: '活动',

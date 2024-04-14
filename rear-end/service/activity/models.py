@@ -9,7 +9,8 @@ def default_image_path():
 # Create your models here.
 class Images(models.Model):
     activity = models.ForeignKey('Activity', on_delete=models.CASCADE, related_name='image_set')
-    image = models.ImageField(upload_to='static/activity_img/',default=default_image_path, blank=True, null=True)  # 存储图片文件
+    image = models.ImageField(upload_to='static/activity_img/', default=default_image_path, blank=True,
+                              null=True)  # 存储图片文件
     description = models.TextField(blank=True)  # 图片描述，可以为空
     upload_time = models.DateTimeField(auto_now_add=True)  # 图片上传时间
 
@@ -29,3 +30,10 @@ class Activity(models.Model):
 
     def __str__(self):
         return f"{self.aid} - {self.content}"
+
+
+class Discuss(models.Model):
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='discuss')
+    user = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='discuss_activity')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
