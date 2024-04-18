@@ -115,7 +115,7 @@ onMounted(() => {
             </div>
             <div class="interactive">
               <div class="collect" @click="Collect(item.pid,item)">
-                <img src="../../assets/icon/collect_active.png" alt="" v-if="item.collected">
+                <img src="../../assets/icon/collect_active2.png" alt="" v-if="item.collected">
                 <img src="../../assets/icon/collect.png" alt="" v-else>
                 {{ item.collects }}
               </div>
@@ -124,7 +124,7 @@ onMounted(() => {
 
               </div>
               <div class="like" @click="Like(item.pid,item)">
-                <img src="../../assets/icon/like_active.png" alt="" v-if="item.liked">
+                <img src="../../assets/icon/like_active2.png" alt="" v-if="item.liked">
                 <img src="../../assets/icon/like.png" alt="" v-else>
                 {{ item.likes }}
               </div>
@@ -268,7 +268,7 @@ onMounted(() => {
 
     h3 {
       text-align: center;
-      color: darkred;
+      color: #D5E80E;
       margin-top: 0.5rem;
     }
 

@@ -132,7 +132,7 @@ const sign_up = async () => {
 
     // 跳转
     setTimeout(() => {
-      router.push('/login')
+      router.go(0)
     }, 500)
   }
 }
@@ -154,7 +154,7 @@ onMounted(() => {
       <div class="in">
         <div class="top">
           <div class="logo">
-            <img src="../../../assets/logo.png" alt="logo">
+            <img src="../../../assets/logo2.png" alt="logo">
           </div>
           欢迎回来
         </div>
@@ -188,7 +188,7 @@ onMounted(() => {
       <div class="in">
         <div class="top">
           <div class="logo">
-            <img src="../../../assets/logo.png" alt="logo">
+            <img src="../../../assets/logo2.png" alt="logo">
           </div>
           欢迎加入
         </div>

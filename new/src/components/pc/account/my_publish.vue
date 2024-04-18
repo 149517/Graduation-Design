@@ -131,15 +131,15 @@ onMounted(() => {
 
 <template>
   <div class="card">
-    <div class="li" :class="{active: activeIndex === 0}" @click="changeTab(0)">帖子</div>
-    <div class="li" :class="{active: activeIndex === 1}" @click="changeTab(1)">求助</div>
-    <div class="li" :class="{active: activeIndex === 2}" @click="changeTab(2)">活动</div>
-    <div class="li" :class="{active: activeIndex === 3}" @click="changeTab(3)">商品</div>
+    <div class="li" :class="{active: activeIndex === 0}" @click.stop="changeTab(0)">帖子</div>
+    <div class="li" :class="{active: activeIndex === 1}" @click.stop="changeTab(1)">求助</div>
+    <div class="li" :class="{active: activeIndex === 2}" @click.stop="changeTab(2)">活动</div>
+    <div class="li" :class="{active: activeIndex === 3}" @click.stop="changeTab(3)">商品</div>
   </div>
   <div class="box rightGap">
     <div v-show="activeIndex === 0">
       <div class="post">
-        <div class="line whiteBg" v-for="item in post" v-if="post[0]" @click="openPage('post',item.pid)">
+        <div class="line whiteBg" v-for="item in post" v-if="post[0]" @click.stop="openPage('post',item.pid)">
           <div class="ll">
 
             <div class="text">
@@ -158,7 +158,7 @@ onMounted(() => {
 
           <div class="delete">
             <!--            <img src="../../../assets/icon/delete.png" alt="">-->
-            <button @click="deletePost(item.pid)">删除</button>
+            <button @click.stop="deletePost(item.pid)">删除</button>
           </div>
         </div>
       </div>
@@ -166,7 +166,7 @@ onMounted(() => {
     </div>
     <div v-show="activeIndex === 1">
       <div class="post">
-        <div class="line whiteBg" v-for="item in help" v-if="help[0]" @click="openPage('help',item.hid)">
+        <div class="line whiteBg" v-for="item in help" v-if="help[0]" @click.stop="openPage('help',item.hid)">
           <div class="ll">
             <div class="text">
               {{ item.content }}
@@ -180,14 +180,14 @@ onMounted(() => {
           </div>
           <div class="delete">
             <!--            <img src="../../../assets/icon/delete.png" alt="">-->
-            <select-state :value="item.status" @selectChange="handleSelectChange" @click="getHid(item.hid)"></select-state>
+            <select-state :value="item.status" @selectChange="handleSelectChange" @click.stop="getHid(item.hid)"></select-state>
           </div>
         </div>
       </div>
     </div>
     <div v-show="activeIndex === 2">
       <div class="post">
-        <div class="line whiteBg" v-for="item in activity" v-if="activity[0]" @click="openPage('activity',item.aid)">
+        <div class="line whiteBg" v-for="item in activity" v-if="activity[0]" @click.stop="openPage('activity',item.aid)">
           <div class="ll">
 
             <div class="text">
@@ -206,14 +206,14 @@ onMounted(() => {
 
           <div class="delete">
             <!--            <img src="../../../assets/icon/delete.png" alt="">-->
-            <button @click="deleteActivity(item.aid)">删除</button>
+            <button @click.stop="deleteActivity(item.aid)">删除</button>
           </div>
         </div>
       </div>
     </div>
     <div v-show="activeIndex === 3">
       <div class="post">
-        <div class="line whiteBg" v-for="item in goods" v-if="goods[0]" @click="openPage('goods',item.gid)">
+        <div class="line whiteBg" v-for="item in goods" v-if="goods[0]" @click.stop="openPage('goods',item.gid)">
           <div class="ll">
 
             <div class="text">
@@ -232,7 +232,7 @@ onMounted(() => {
 
           <div class="delete">
             <!--            <img src="../../../assets/icon/delete.png" alt="">-->
-            <button @click="deleteGoods(item.gid)">删除</button>
+            <button @click.stop="deleteGoods(item.gid)">删除</button>
           </div>
         </div>
       </div>

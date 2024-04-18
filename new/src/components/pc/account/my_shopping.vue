@@ -56,7 +56,7 @@ onMounted(() => {
         ￥ {{ item.price }}
       </div>
       <div class="delete">
-        <button @click="deleteShopping(item.gid)">删除</button>
+        <button @click.stop="deleteShopping(item.gid)">删除</button>
       </div>
     </div>
     <div class="btn">

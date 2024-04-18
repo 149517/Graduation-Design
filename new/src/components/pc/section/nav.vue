@@ -76,7 +76,7 @@ onMounted(() => {
   <div class="nav whiteBg">
     <div class="in">
       <div class="logo">
-        <img src="../../../assets/logo.png" alt="logo">
+        <img src="../../../assets/logo2.png" alt="logo">
       </div>
       <div class="link">
         <div class="li" v-for="item in link" :key="item.id" :class="{active:item.active}">
@@ -107,13 +107,20 @@ onMounted(() => {
 }
 
 .in {
+  .logo{
+    img{
+      transform: scale(1.1);
+      margin: 1.2rem 0;
+    }
+  }
   .link {
     .li {
-      $height: 2.7rem;
+      $height: 2rem;
       width: 100%;
       height: $height;
       line-height: $height;
-      margin: 0.55rem 0;
+      margin: 1rem auto;
+
       a{
         display: flex;
         align-items: center;
@@ -131,12 +138,16 @@ onMounted(() => {
     }
 
     .active {
-      background: #D5E80E;
+      width: 80%;
+      opacity: 0.8;
+      //background: #D5E80E;
       border-radius: 1.6rem;
+      //border: 3px solid #D5E80E;
+      background: #e8e8e8;
 
       a {
-        color: white;
         font-weight: bold;
+        color: black;
       }
     }
   }

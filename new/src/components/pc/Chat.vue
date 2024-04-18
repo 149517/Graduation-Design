@@ -15,7 +15,7 @@ import NavChat from "./section/nav-chat.vue";
         <div class="list">
           <div class="box pointer">
             <div class="pic">
-              <img src="../../assets/logo.png" alt="">
+              <img src="../../assets/logo2.png" alt="">
             </div>
             <div class="mes">
               <div class="uname">用户名</div>
@@ -24,7 +24,7 @@ import NavChat from "./section/nav-chat.vue";
           </div>
           <div class="box pointer">
             <div class="pic">
-              <img src="../../assets/logo.png" alt="">
+              <img src="../../assets/logo2.png" alt="">
             </div>
             <div class="mes">
               <div class="uname">用户名</div>
@@ -33,7 +33,7 @@ import NavChat from "./section/nav-chat.vue";
           </div>
           <div class="box pointer">
             <div class="pic">
-              <img src="../../assets/logo.png" alt="">
+              <img src="../../assets/logo2.png" alt="">
             </div>
             <div class="mes">
               <div class="uname">用户名</div>
@@ -50,7 +50,7 @@ import NavChat from "./section/nav-chat.vue";
           <!--        通过值判断是当前用户还是聊天对象，如果是对象则通过通过类名置于左侧-->
           <div class="left">
             <div class="pic">
-              <img src="../../assets/logo.png" alt="">
+              <img src="../../assets/logo2.png" alt="">
             </div>
             <div class="message">
               明天去哪玩？
@@ -61,7 +61,7 @@ import NavChat from "./section/nav-chat.vue";
               哪也不想去
             </div>
             <div class="pic">
-              <img src="../../assets/logo.png" alt="">
+              <img src="../../assets/logo2.png" alt="">
             </div>
           </div>
         </div>

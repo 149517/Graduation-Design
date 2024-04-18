@@ -126,7 +126,7 @@ onMounted(() => {
           </div>
           <div class="interactive">
             <div class="collect" @click="Collect(post.pid,post)">
-              <img src="../../../assets/icon/collect_active.png" alt="" v-if="post.collected">
+              <img src="../../../assets/icon/collect_active2.png" alt="" v-if="post.collected">
               <img src="../../../assets/icon/collect.png" alt="" v-else>
               {{ post.collects }}
             </div>
@@ -135,7 +135,7 @@ onMounted(() => {
 
             </div>
             <div class="like" @click="Like(post.pid,post)">
-              <img src="../../../assets/icon/like_active.png" alt="" v-if="post.liked">
+              <img src="../../../assets/icon/like_active2.png" alt="" v-if="post.liked">
               <img src="../../../assets/icon/like.png" alt="" v-else>
               {{ post.likes }}
             </div>

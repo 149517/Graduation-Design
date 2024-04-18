@@ -62,12 +62,12 @@ const getImage = () => {
 }
 // 修改sending的值，触发子组件向父组件传值，然后发送请求
 const fixValue = () => {
-  if (image.value === true) {
-    console.log(store.state.send)
+  // if (image.value === false) {
+  //   console.log(store.state.send)
     store.commit('changeSend', true)
-  } else {
-    fileUpload()
-  }
+  // } else {
+  //   fileUpload()
+  // }
 }
 
 

@@ -107,7 +107,7 @@ import NavLine from "./section/nav-line.vue";
         </div>
         <div class="right">
           <div class="logo">
-            <img src="../../assets/logo.png" alt="">
+            <img src="../../assets/logo2.png" alt="">
           </div>
         </div>
 

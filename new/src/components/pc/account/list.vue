@@ -56,7 +56,7 @@ const fixCurrent = (path)=>{
         </div>
         <div class="pic enter">
           <img class="border" :src="pic" alt="" v-if="pic">
-          <img class="border" src="../../../assets/logo.png" alt="" v-else>
+          <img class="border" src="../../../assets/logo2.png" alt="" v-else>
         </div>
       </div>
       <div class="line" @click="openPage('/mine/userInfo')">

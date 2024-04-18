@@ -65,7 +65,7 @@ onMounted(()=>{
   <div class="nav">
     <div class="in">
       <div class="logo">
-        <img src="../../../assets/logo.png" alt="logo">
+        <img src="../../../assets/logo2.png" alt="logo">
       </div>
       <div class="link">
         <div class="li" v-for="item in link" :key="item.id">
