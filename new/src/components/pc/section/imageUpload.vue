@@ -60,8 +60,9 @@ const handleCancel = () => {
 const handlePreview = async file => {
   if (!file.url && !file.preview) {
     file.preview = await getBase64(file.originFileObj);
+    // console.log(file)
   }
-  previewImage.value = file.url || file.preview;
+  previewImage.value = file.thumbUrl || file.preview;
   previewVisible.value = true;
   previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
 };

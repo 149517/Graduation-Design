@@ -30,7 +30,7 @@ const help = ref([
     content: null,
     time: null,
     image: null,
-    status:null
+    status: null
   }
 ])
 const activity = ref([
@@ -49,11 +49,12 @@ const getData = async () => {
     res = await postApi.getMyPost()
     console.log(res)
     post.value = res.data
-  }
-  if (activeIndex.value === 1) {
-    res = await helpApi.getMyHelp()
-    console.log(res)
-    help.value = res.data
+
+
+    // 因为数据异步获取，所以导致在互助页面加载数据的时候，传递到子组件的状态是null,所以在页面第一次拿取数据的时候就一起获取
+    let result = await helpApi.getMyHelp()
+    console.log(result)
+    help.value = result.data
   }
   if (activeIndex.value === 2) {
     res = await activityApi.getMyActivity()
@@ -71,19 +72,19 @@ const changeTab = (index) => {
   getData()
 };
 
-const deletePost = async (pid)=>{
+const deletePost = async (pid) => {
   const res = await postApi.deletePost(pid)
   console.log(res)
 
   await getData()
 }
-const deleteActivity = async (aid)=>{
+const deleteActivity = async (aid) => {
   const res = await activityApi.deleteActivity(aid)
   console.log(res)
 
   await getData()
 }
-const deleteGoods = async (gid)=>{
+const deleteGoods = async (gid) => {
   const res = await goodsApi.deleteGoods(gid)
   console.log(res)
 
@@ -98,29 +99,29 @@ const handleSelectChange = (value) => {
 }
 const router = useRouter()
 const hid = ref(null)
-const getHid = (id) =>{
+const getHid = (id) => {
   hid.value = id
 }
-const uploadStatus = async (status)=>{
-  if(hid.value){
-    const res = await helpApi.changeStatus(hid.value,status)
+const uploadStatus = async (status) => {
+  if (hid.value) {
+    const res = await helpApi.changeStatus(hid.value, status)
     console.log(res)
-    router.go(0)
+    // router.go(0)
   }
 }
 
 // 打开详情页
-const openPage = (type,id) =>{
-  if(type === 'post'){
+const openPage = (type, id) => {
+  if (type === 'post') {
     router.push(`/postDetails/${id}`)
   }
-  if(type === 'help'){
+  if (type === 'help') {
     router.push(`/helpDetails/${id}`)
   }
-  if(type === 'activity'){
+  if (type === 'activity') {
     router.push(`/activityDetails/${id}`)
   }
-  if(type === 'goods'){
+  if (type === 'goods') {
     router.push(`/goodsDetails/${id}`)
   }
 }
@@ -137,7 +138,7 @@ onMounted(() => {
     <div class="li" :class="{active: activeIndex === 3}" @click.stop="changeTab(3)">商品</div>
   </div>
   <div class="box rightGap">
-    <div v-show="activeIndex === 0">
+    <div v-if="activeIndex === 0">
       <div class="post">
         <div class="line whiteBg" v-for="item in post" v-if="post[0]" @click.stop="openPage('post',item.pid)">
           <div class="ll">
@@ -164,7 +165,7 @@ onMounted(() => {
       </div>
 
     </div>
-    <div v-show="activeIndex === 1">
+    <div v-if="activeIndex === 1">
       <div class="post">
         <div class="line whiteBg" v-for="item in help" v-if="help[0]" @click.stop="openPage('help',item.hid)">
           <div class="ll">
@@ -180,14 +181,16 @@ onMounted(() => {
           </div>
           <div class="delete">
             <!--            <img src="../../../assets/icon/delete.png" alt="">-->
-            <select-state :value="item.status" @selectChange="handleSelectChange" @click.stop="getHid(item.hid)"></select-state>
+            <select-state :value="item.status" @selectChange="handleSelectChange"
+                          @click.stop="getHid(item.hid)"></select-state>
           </div>
         </div>
       </div>
     </div>
-    <div v-show="activeIndex === 2">
+    <div v-if="activeIndex === 2">
       <div class="post">
-        <div class="line whiteBg" v-for="item in activity" v-if="activity[0]" @click.stop="openPage('activity',item.aid)">
+        <div class="line whiteBg" v-for="item in activity" v-if="activity[0]"
+             @click.stop="openPage('activity',item.aid)">
           <div class="ll">
 
             <div class="text">
@@ -211,7 +214,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-show="activeIndex === 3">
+    <div v-if="activeIndex === 3">
       <div class="post">
         <div class="line whiteBg" v-for="item in goods" v-if="goods[0]" @click.stop="openPage('goods',item.gid)">
           <div class="ll">

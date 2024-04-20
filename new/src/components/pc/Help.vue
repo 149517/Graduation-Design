@@ -162,9 +162,12 @@ onMounted(() => {
     width: 100%;
 
     img {
-      max-width: 30%;
+      //max-width: 30%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
       margin: 0.5rem;
-      border: 1px solid gainsboro;
+      //border: 1px solid gainsboro;
       border-radius: 0.5rem;
     }
   }

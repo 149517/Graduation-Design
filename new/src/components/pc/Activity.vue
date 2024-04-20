@@ -13,7 +13,7 @@ const data = ref([{
   ]
 }])
 const router = useRouter()
-const openDetails = (aid) =>{
+const openDetails = (aid) => {
   router.push(`/activityDetails/${aid}`)
 }
 const getActivity = async () => {
@@ -62,6 +62,8 @@ import Release from "./section/release.vue";
                :alt="item.images && item.images.length > 0 ? item.images[0].description : ''"
                v-if="item.images !== null && item.images.length > 0">
 
+          <!--          <div class="img" :style="{ 'background-image': 'url(' + item.images[0].image + ')' }"></div>-->
+
           <div class="info">
             <div class="line">
               <div class="type activity" v-if="item.type === 0">
@@ -93,21 +95,28 @@ import Release from "./section/release.vue";
 }
 
 .block {
-  display: grid;
-  gap: 1.1rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  //gap: 1.1rem;
+  //grid-template-columns: 1fr 1fr 1fr;
 }
 
 .box {
-  width: 100%;
+  //flex: 1;
+  width: 20%;
   border-radius: 0.5rem;
-  min-height: 21.1rem;
+  margin: 1rem;
+  //min-height: 21.1rem;
 
   img {
     width: 100%;
-    min-height: 21.1rem;
+    //width: 330px;
+    min-height: 225px;
+    object-fit: cover;
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
+    border-bottom: 1px solid gainsboro;
   }
 
   .info {

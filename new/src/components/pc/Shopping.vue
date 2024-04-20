@@ -85,16 +85,27 @@ onMounted(() => {
 }
 
 .block {
+  //display: flex;
+  //flex-wrap: wrap;
+  //justify-content: center;
+  //align-items: center;
+  width: 100%;
   display: grid;
   gap: 1.11rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .in{
   border-radius: 0.55rem;
+  margin: 1rem;
+
 
   img {
     width: 100%;
+    //width: 200px;
+    //height: 200px;
+    object-fit: contain;
+    //object-fit: cover;
     //height: 11.11rem;
     border-top-left-radius: 0.55rem;
     border-top-right-radius: 0.55rem;

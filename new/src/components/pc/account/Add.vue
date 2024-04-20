@@ -64,7 +64,7 @@ const getImage = () => {
 const fixValue = () => {
   // if (image.value === false) {
   //   console.log(store.state.send)
-    store.commit('changeSend', true)
+  store.commit('changeSend', true)
   // } else {
   //   fileUpload()
   // }
@@ -78,6 +78,7 @@ const handleSending = (value) => {
     // console.log(item.thumbUrl)
     fileList.value.images.push(item.thumbUrl)
   })
+  // console.log(fileList.value)
   fileUpload()
 }
 const handleSelectChange = (value) => {
@@ -99,10 +100,12 @@ const fileUpload = async () => {
   fileList.value.content = content.value
   if (!content.value) {
     openNotificationWithIcon('info')
+    store.commit('changeSend', false)
     return null
   }
   if (!fileList.value.type) {
     openNotificationWithIcon('info')
+    store.commit('changeSend', false)
     return null
   }
   console.log(fileList.value)
@@ -121,7 +124,7 @@ const fileUpload = async () => {
       if (!price.value) {
         openNotificationWithIcon('warning');
         // 重置状态，使按钮再次可点击
-        store.commit('changeSend', true);
+        store.commit('changeSend', false);
         return null;
       }
       fileList.value.price = price.value;

@@ -10,7 +10,7 @@ from datetime import datetime
 
 from post.models import Post, Images, Like, Collect, Comment
 from user.models import UserInfo
-from django.core import serializers
+from django.db.models import Count
 
 
 # Create your views here.
@@ -31,8 +31,9 @@ def all_view(request):
             # print(uid, username)
             # 用户id将用来查询当前用户的交互记录
 
-        all_posts = Post.objects.all()
-        # 查询所有的帖子数据
+        # 查询所有的帖子数据，并按照时间降序排列
+        all_posts = Post.objects.all().order_by('-time')
+        
         # 创建一个空列表，用于存储每个帖子的数据
         posts_data = []
 
@@ -534,15 +535,20 @@ def delete_post_by_pid(request):
 def hot_view(request):
     if request.method == 'GET':
         # 获取最近发布的十个帖子，只保留 pid、content 和 time 三个参数
-        recent_posts = Post.objects.order_by('-time').values('pid', 'content', 'time')[:10]
+        # recent_posts = Post.objects.order_by('-time').values('pid', 'content', 'time')[:10]
 
+        # 获取点赞数量最多的十个帖子，并按照点赞数量和发布时间进行排序
+        hot_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count', '-time')[:10]
+
+        print('hot_posts', hot_posts)
         # 构建一个包含所需数据的 JSON 对象
         posts_data = []
-        for post in recent_posts:
+        for post in hot_posts:
             post_data = {
-                'pid': post['pid'],
-                'content': post['content'],
-                'time': post['time'].strftime('%Y-%m-%d %H:%M:%S')  # 将时间格式化为字符串
+                'pid': post.pid,
+                'content': post.content,
+                'time': post.time.strftime('%Y-%m-%d %H:%M:%S'),  # 将时间格式化为字符串
+                'like_count': post.like_count
             }
             posts_data.append(post_data)
         # 返回 JSON 响应

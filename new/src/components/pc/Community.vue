@@ -41,11 +41,11 @@ const getPost = async () => {
 
 const hot = ref([
   {
-    pid:null,
-    content:null
+    pid: null,
+    content: null
   }
 ])
-const hotData = async () =>{
+const hotData = async () => {
   const res = await postApi.getHosData()
   console.log(res)
   hot.value = res.data
@@ -106,8 +106,10 @@ onMounted(() => {
               <div class="text">
                 {{ item.content }}
               </div>
-              <div class="images" v-for="li in item.images">
-                <img :src="li.image" :alt="li.description">
+              <div class="images">
+                <div class="img" v-for="li in item.images">
+                  <img :src="li.image" :alt="li.description">
+                </div>
               </div>
               <div class="time">
                 {{ formatDate(item.time) }}
@@ -138,7 +140,7 @@ onMounted(() => {
 
             <div class="list">
               <div class="ll flex" v-for="(item,index) in hot" :key="item.pid" @click="openDetails(item.pid)">
-                <div class="num">{{ index + 1}}</div>
+                <div class="num">{{ index + 1 }}</div>
                 <div class="entry one-line-ellipsis">
                   {{ item.content }}
                 </div>
@@ -189,6 +191,7 @@ onMounted(() => {
       background: salmon;
       border-radius: 50%;
 
+
       img {
         width: 100%;
         height: 100%;
@@ -209,12 +212,22 @@ onMounted(() => {
     line-height: 1.5rem;
 
     .images {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0.5rem;
+      //display: grid;
+      //grid-template-columns: 1fr 1fr 1fr;
+      //gap: 0.5rem;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      .img{
+        margin-right: 1rem;
+      }
 
       img {
-        width: 100%;
+        //width: 100%;
+        width: 180px;
+        height: 180px;
+        margin-top: 0.5rem;
+        object-fit: cover;
         border: 1px solid gainsboro;
         border-radius: 0.5rem;
       }

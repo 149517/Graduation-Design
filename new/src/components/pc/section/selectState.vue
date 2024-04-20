@@ -4,7 +4,6 @@
         ref="select"
         v-model:value="value1"
         style="width: 120px"
-        @focus="focus"
         @change="handleChange"
     >
       <a-select-option v-for="option in options1" :key="option.value" :value="option.value">
@@ -23,9 +22,12 @@ const props = defineProps({
 });
 const value = props.value
 
-const value1 = ref('未完成');
+
+// const value1 = ref('未完成');
+const value1 = ref('');
 
 const getValue = () => {
+  console.log('value值' + value)
   if (value === 1) {
     value1.value = "未完成"
   }
@@ -44,15 +46,22 @@ const options1 = ref([
 ]);
 
 const store = useStore()
-// 需要通过 click 的变化触发函数，将图片传递到父组件一起发送
-const click = computed(() => store.state.send)
+// 需要通过 click 的变化触发函数，将内容传递到父组件一起发送
+// const click = computed(() => store.state.send)
+//
+// const emit = defineEmits(['sending'])
+// watch(click, (newValue) => {
+//   if (newValue === true) {
+//     emit('sending', value1.value)
+//   }
+// })
+const emit = defineEmits(['sending', 'selectChange']);
 
-const emit = defineEmits(['sending'])
-watch(click, (newValue) => {
+watch(() => store.state.send, (newValue) => {
   if (newValue === true) {
-    emit('sending', value1.value)
+    emit('sending', value1.value);
   }
-})
+});
 // const focus = () => {
 //   console.log('focus');
 // };
