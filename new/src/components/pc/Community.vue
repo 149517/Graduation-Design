@@ -212,9 +212,6 @@ onMounted(() => {
     line-height: 1.5rem;
 
     .images {
-      //display: grid;
-      //grid-template-columns: 1fr 1fr 1fr;
-      //gap: 0.5rem;
       display: flex;
       align-items: center;
       width: 100%;

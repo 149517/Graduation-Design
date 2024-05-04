@@ -173,8 +173,8 @@ $rightGap: 1.2rem;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  width: 20rem;
-  height: 20rem;
+  width: 16rem;
+  height: 16rem;
   border-radius: 1rem;
   background: white;
   box-shadow: 1px 1px 10px silver;
@@ -182,9 +182,13 @@ $rightGap: 1.2rem;
 
   img {
     margin: 1rem;
-    width: 18rem;
-    height: 18rem;
+    width: 14rem;
+    height: 14rem;
     border-radius: 1rem;
+  }
+  p{
+    line-height: 16rem;
+    text-align: center;
   }
 }
 .search{

@@ -22,6 +22,7 @@ class Activity(models.Model):
     user = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
     images = models.ManyToManyField(Images, related_name='helps', blank=True)
     number = models.IntegerField(default=2)
+    contact_info = models.TextField(blank=True, default=None)
     TYPE_CHOICES = [
         (0, '活动'),
         (1, '游戏'),

@@ -94,6 +94,7 @@ def get_help_by_hid(request):
                     'username': help.user.username,
                     'pic': 'http://localhost:8000' + help.user.pic.url if help.user.pic else None
                 },
+                'contact_info': help.contact_info,
                 'images': images_data,
             }
             return JsonResponse(response_data, status=200)
@@ -110,6 +111,8 @@ def add_view(request):
         # print(data)
         content = data.get('content')
         images_base64 = data.get('images', [])
+        contact = data.get('contact_info')
+        print("contact_info: ", contact)
         # print(images_base64)
 
         # 获取用户信息
@@ -122,7 +125,7 @@ def add_view(request):
             current_user = UserInfo.objects.get(pk=user_data['uid'])
 
             # 创建帖子对象并保存基本信息
-            new_help = Help(content=content, user=current_user)
+            new_help = Help(content=content, contact_info=contact, user=current_user)
             new_help.save()
 
             print("cccc")

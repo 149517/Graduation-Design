@@ -120,7 +120,7 @@ onMounted(() => {
       //align-items: center;
     }
 
-    .price {
+    .price{
       line-height: 1.8rem;
       background: orange;
       border-radius: 0.5rem;

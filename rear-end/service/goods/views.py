@@ -90,6 +90,7 @@ def get_good_by_gid(request):
                 'time': good.time,
                 'price': good.price,
                 'active': good.active,
+                'contact_info': good.contact_info,
                 'user': {
                     'uid': good.user.uid,
                     'username': good.user.username,
@@ -111,6 +112,8 @@ def add_view(request):
         price = data.get('price')
         content = data.get('content')
         images_base64 = data.get('images', [])
+        contact = data.get('contact_info')
+        print("contact_info: ", contact)
 
         # 获取用户信息
         user_data = parse_jwt_token(request)
@@ -122,7 +125,7 @@ def add_view(request):
             current_user = UserInfo.objects.get(pk=user_data['uid'])
 
             # 创建帖子对象并保存基本信息
-            new_goods = Goods(content=content, user=current_user, price=price)
+            new_goods = Goods(content=content, user=current_user, contact_info=contact, price=price)
             new_goods.save()
 
             print("cccc")

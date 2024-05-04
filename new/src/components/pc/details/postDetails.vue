@@ -65,6 +65,7 @@ const addComment = async () => {
   const result = await postApi.addComment(pid.value, content.value)
   console.log(result)
   comment.value = null
+  content.value = null
   await getComment()
 }
 const Collect = async (pid, item) => {
@@ -145,7 +146,7 @@ onMounted(() => {
           <div class="box whiteBg">
             <h3>评论</h3>
             <div class="addComment">
-              <input type="text" v-model="content">
+              <input type="text" v-model="content" @keydown.enter="addComment">
               <button @click="addComment">发表</button>
             </div>
 

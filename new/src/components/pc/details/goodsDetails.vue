@@ -13,6 +13,7 @@ const data = ref({
   content: null,
   time: null,
   status: 1,
+  contact_info: null,
   user: {
     pic: null,
     uid: null,
@@ -56,7 +57,7 @@ onMounted(() => {
     </div>
     <div class="contain">
       <div class="head">
-        <h1>互助详情</h1>
+        <h1>商品详情</h1>
         <div class="search">
           <!--          <input type="text">-->
           <!--          <button>-->
@@ -96,7 +97,8 @@ onMounted(() => {
     </div>
   </div>
   <div class="wechat" v-if="wechat">
-    <img src="../../../assets/images/WeChat.jpg" alt="">
+    <p v-if="data.contact_info">{{ data.contact_info }}</p>
+    <img v-else src="../../../assets/images/WeChat.jpg" alt="">
   </div>
 </template>
 

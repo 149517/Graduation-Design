@@ -13,9 +13,11 @@ const router = useRouter()
 const content = ref(null)
 const price = ref(null)
 const type = ref(null)
+const contact_info = ref(null)
 
 const activity = ref(false)
 const goods = ref(false)
+const contact = ref(false)
 
 const fileList = ref({
   content: null,
@@ -23,6 +25,7 @@ const fileList = ref({
   images: [],
   a_type: null,
   price: null,
+  contact_info: null
 })
 
 const openNotificationWithIcon = type => {
@@ -82,8 +85,10 @@ const handleSending = (value) => {
   fileUpload()
 }
 const handleSelectChange = (value) => {
+
   console.log("类型")
   console.log('Selected value:', value);
+  contact.value = value !== 'post';
   if (value === 'goods') {
     goods.value = true
     activity.value = false
@@ -94,10 +99,11 @@ const handleSelectChange = (value) => {
   }
   // 在这里处理选中的值
   fileList.value.type = value
-  // console.log(fileList.value)
+  console.log(fileList.value)
 }
 const fileUpload = async () => {
   fileList.value.content = content.value
+  fileList.value.contact_info = contact_info.value
   if (!content.value) {
     openNotificationWithIcon('info')
     store.commit('changeSend', false)
@@ -108,6 +114,14 @@ const fileUpload = async () => {
     store.commit('changeSend', false)
     return null
   }
+  if (fileList.value.type !== 'post') {
+    if (!fileList.value.contact_info) {
+      openNotificationWithIcon('info')
+      store.commit('changeSend', false)
+      return null
+    }
+  }
+
   console.log(fileList.value)
 
   let result = null;
@@ -129,7 +143,7 @@ const fileUpload = async () => {
       }
       fileList.value.price = price.value;
       result = await goodsApi.fileUpload(fileList.value);
-      alert(result.message);
+      // alert(result.message);
     }
 
     openNotificationWithIcon('success');
@@ -147,7 +161,7 @@ const fileUpload = async () => {
   }
   console.log(result)
 
-  // 刷新页面
+  // // 刷新页面
   setTimeout(() => {
     router.go(0)
   }, 500)
@@ -195,6 +209,9 @@ const fileUpload = async () => {
             活动
           </label>
         </div>
+        <div class="type info" v-if="contact">
+          联系方式：<input type="text" v-model.trim="contact_info">
+        </div>
         <div class="btn">
           <button @click="fixValue()">发布</button>
         </div>
@@ -227,11 +244,12 @@ const fileUpload = async () => {
   }
 }
 
-.price {
+.price,
+.info {
   input {
     border-radius: 0.5rem;
-    height: 40px;
-    line-height: 40px;
+    height: 35px;
+    line-height: 35px;
     outline: none;
     padding: 0 0.5rem;
   }

@@ -22,6 +22,7 @@ class Help(models.Model):
         (1, '未完成'),
     ]
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    contact_info = models.TextField(blank=True, default=None)
 
     def __str__(self):
         return f"{self.hid} - {self.content}"

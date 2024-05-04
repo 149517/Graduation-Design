@@ -13,6 +13,7 @@ const data = ref({
   content: null,
   time: null,
   type: 0,
+  contact_info:null,
   user: {
     pic: null,
     uid: null,
@@ -51,6 +52,7 @@ const addComment = async () => {
   const result = await activityApi.addDiscuss(aid.value, content.value)
   console.log(result)
   comment.value = null
+  content.value = null
   await getComment()
 }
 
@@ -109,7 +111,7 @@ onMounted(() => {
           <div class="box whiteBg">
             <h3>讨论</h3>
             <div class="addComment">
-              <input type="text" v-model="content">
+              <input type="text" v-model="content" @keydown.enter="addComment">
               <button @click="addComment">发表</button>
             </div>
 
@@ -138,7 +140,8 @@ onMounted(() => {
     </div>
   </div>
   <div class="wechat" v-if="wechat">
-    <img src="../../../assets/images/WeChat.jpg" alt="">
+    <p v-if="data.contact_info">{{data.contact_info}}</p>
+    <img v-else src="../../../assets/images/WeChat.jpg" alt="">
   </div>
 </template>
 

@@ -87,6 +87,7 @@ def get_activity_by_aid(request):
                 'content': activity.content,
                 'time': activity.time,
                 'number': activity.number,
+                'contact_info': activity.contact_info,
                 'user': {
                     'uid': activity.user.uid,
                     'username': activity.user.username,
@@ -108,6 +109,8 @@ def add_view(request):
         content = data.get('content')
         type = data.get('a_type')
         images_base64 = data.get('images', [])
+        contact = data.get('contact_info')
+        print("contact_info: ", contact)
         # print(images_base64)
 
         # 获取用户信息
@@ -120,7 +123,7 @@ def add_view(request):
             current_user = UserInfo.objects.get(pk=user_data['uid'])
 
             # 创建帖子对象并保存基本信息
-            new_activity = Activity(content=content, user=current_user, type=type)
+            new_activity = Activity(content=content, contact_info=contact, user=current_user, type=type)
             new_activity.save()
 
             print("cccc")

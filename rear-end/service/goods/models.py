@@ -30,6 +30,6 @@ class Goods(models.Model):
     images = models.ManyToManyField(Images, related_name='helps', blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     active = models.BooleanField(default=True)
-
+    contact_info = models.TextField(blank=True, default=None)
     def __str__(self):
         return f"{self.gid} - {self.content}"

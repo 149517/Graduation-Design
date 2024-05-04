@@ -13,6 +13,7 @@ const help = ref({
   content: null,
   time: null,
   status: 1,
+  contact_info:null,
   user: {
     pic: null,
     uid: null,
@@ -82,8 +83,10 @@ onMounted(() => {
     </div>
   </div>
   <div class="wechat" v-if="wechat">
-    <img src="../../../assets/images/WeChat.jpg" alt="">
+    <p v-if="help.contact_info">{{help.contact_info}}</p>
+    <img v-else src="../../../assets/images/WeChat.jpg" alt="">
   </div>
+
 </template>
 
 <style scoped lang="scss">
