@@ -8,7 +8,7 @@ import Release from "./section/release.vue";
 
 const goods = ref([{
   gid: null,
-  active:true,
+  active: true,
   content: null,
   time: null,
   price: null,
@@ -26,7 +26,7 @@ const getGoods = async () => {
   goods.value = result.data.filter(item => item.active === true)
 }
 const router = useRouter()
-const openDetails = (gid) =>{
+const openDetails = (gid) => {
   router.push(`/goodsDetails/${gid}`)
 }
 onMounted(() => {
@@ -85,30 +85,31 @@ onMounted(() => {
 }
 
 .block {
-  //display: flex;
-  //flex-wrap: wrap;
-  //justify-content: center;
-  //align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   width: 100%;
-  display: grid;
-  gap: 1.11rem;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  //display: grid;
+  //gap: 1.11rem;
+  //grid-template-columns: 1fr 1fr 1fr 1fr;
 }
-
-.in{
+.box{
+  width: 24%;
+  border-radius: 0.5rem;
+  //margin: 1rem;
+}
+.in {
   border-radius: 0.55rem;
-  margin: 1rem;
-
+  margin: 0.8rem;
+  //width: 20%;
 
   img {
     width: 100%;
-    //width: 200px;
-    //height: 200px;
-    object-fit: contain;
-    //object-fit: cover;
-    //height: 11.11rem;
-    border-top-left-radius: 0.55rem;
-    border-top-right-radius: 0.55rem;
+    //width: 330px;
+    min-height: 225px;
+    object-fit: cover;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
     border-bottom: 1px solid gainsboro;
   }
 
@@ -120,7 +121,7 @@ onMounted(() => {
       //align-items: center;
     }
 
-    .price{
+    .price {
       line-height: 1.8rem;
       background: orange;
       border-radius: 0.5rem;
@@ -140,7 +141,7 @@ onMounted(() => {
 
     .intro {
       padding: 0 0.55rem 0.55rem;
-      margin:1rem 0.5rem;
+      margin: 1rem 0.5rem;
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;

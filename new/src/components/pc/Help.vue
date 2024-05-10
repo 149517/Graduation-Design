@@ -61,22 +61,28 @@ onMounted(() => {
           </button>
         </div>
       </div>
-      <div class="block rightGap whiteBg">
+      <div class="block rightGap">
         <div class="box" v-for="item in helps" :key="item.hid">
           <div
               @click="openDetails(item.hid)"
               :class="{'Incomplete': item.status === 1, 'Completed': item.status === -1, 'In_progress': item.status === 0}">
             <div class="state" v-if="item.status === 1">
-              <div class="color"></div>
-              未完成
+              <div class="color">
+                未完成
+              </div>
+
             </div>
             <div class="state" v-if="item.status === -1">
-              <div class="color"></div>
-              已完成
+              <div class="color">
+                已完成
+              </div>
+
             </div>
             <div class="state" v-if="item.status === 0">
-              <div class="color"></div>
-              进行中
+              <div class="color">
+                进行中
+              </div>
+
             </div>
             <div class="content">
               {{ item.content }}
@@ -104,7 +110,9 @@ onMounted(() => {
 .box {
   border-radius: 0.5rem;
   padding: 0.5rem 0.5rem 0.5rem 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  background: white;
+  border: 1px solid gainsboro;
 
   .state {
     font: {
@@ -114,41 +122,49 @@ onMounted(() => {
     align-items: center;
 
     .color {
+      width: 200px;
+      height: 30px;
+      background: black;
+      padding-left: 30px;
+      line-height: 30px;
       margin-right: 1rem;
-      width: 0.5rem;
-      height: 0.5rem;
+      //width: 0.5rem;
+      //height: 0.5rem;
       border-radius: 0.25rem;
     }
 
   }
 
   .Incomplete {
-    background: #fff7f7;
+    //background: #fff7f7;
     padding: 1rem;
     border-radius: 0.5rem;
 
     .color {
-      background: #cc5858;
+      //background: #cc5858;
+      background: #fad7d7;
     }
   }
 
   .In_progress {
-    background: #f6fff7;
+    //background: #f6fff7;
     padding: 1rem;
     border-radius: 0.5rem;
 
     .color {
-      background: #71ee7b;
+      //background: #71ee7b;
+      background: #c9ffcf;
     }
   }
 
   .Completed {
-    background: #d9d9d9;
+    //background: #d9d9d9;
     padding: 1rem;
     border-radius: 0.5rem;
 
     .color {
-      background: #858585;
+      //background: #858585;
+      background: #d9d9d9;
     }
   }
 

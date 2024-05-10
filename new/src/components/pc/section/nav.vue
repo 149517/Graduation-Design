@@ -98,7 +98,8 @@ onMounted(() => {
   //width: calc(100% - 3.33rem);
   height: 95vh;
   text-align: center;
-  border: 1px solid gainsboro;
+  background: #f7f7f7;
+  //border: 1px solid gainsboro;
   border-radius: 0.55rem;
   position: fixed;
   top: 50%;
@@ -109,14 +110,14 @@ onMounted(() => {
 .in {
   .logo{
     img{
-      transform: scale(1.1);
+      //transform: scale(1.1);
       margin: 1.2rem 0;
     }
   }
   .link {
     .li {
-      $height: 2rem;
-      width: 100%;
+      $height: 2.4rem;
+      width: 80%;
       height: $height;
       line-height: $height;
       margin: 1rem auto;
@@ -124,9 +125,8 @@ onMounted(() => {
       a{
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-evenly;
       }
-
 
       $imgWid: 1.6rem;
 
@@ -139,11 +139,11 @@ onMounted(() => {
 
     .active {
       width: 80%;
-      opacity: 0.8;
+      //opacity: 0.8;
       //background: #D5E80E;
-      border-radius: 1.6rem;
+      border-radius: 0.6rem;
       //border: 3px solid #D5E80E;
-      background: #e8e8e8;
+      background: #d3d3d3;
 
       a {
         font-weight: bold;

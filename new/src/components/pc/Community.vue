@@ -179,7 +179,7 @@ onMounted(() => {
   padding: 0.5rem 1rem;
   border: 1px solid gainsboro;
   border-radius: 0.5rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.5rem;
 
   .userInfo {
     $height: 2.78rem;

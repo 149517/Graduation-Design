@@ -186,7 +186,7 @@ const fileUpload = async () => {
           <!--            </button>-->
         </div>
       </div>
-      <div class="block rightGap">
+      <div class="block rightGap whiteBg">
         <textarea id="text" v-model="content"></textarea>
         <div class="img">
           <ImageUpload @click="getImage" @sending="handleSending"></ImageUpload>
@@ -221,10 +221,15 @@ const fileUpload = async () => {
   </div>
 </template>
 <style scoped lang="scss">
+.block{
+  height: calc(100vh - 2.5rem - 1.2rem - 1.2rem - 1.2rem - 1rem - 1.2rem);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
 #text {
   box-sizing: border-box;
   width: 100%;
-  height: 16rem;
+  height: 12rem;
   outline: none;
   border-radius: 10px;
   padding: 1rem;

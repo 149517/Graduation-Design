@@ -97,7 +97,7 @@ import Release from "./section/release.vue";
 .block {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   //gap: 1.1rem;
   //grid-template-columns: 1fr 1fr 1fr;
 }

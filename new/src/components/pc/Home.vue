@@ -23,7 +23,7 @@ import NavLine from "./section/nav-line.vue";
 
         </div>
         <div class="right">
-          <img src="../../assets/images/Home/left-text-1.jpg" alt="社区">
+          <img src="../../assets/images/Home/left-text-2.jpg" alt="社区">
         </div>
       </div>
       <div class="picture-column">
@@ -77,7 +77,7 @@ import NavLine from "./section/nav-line.vue";
           </div>
         </div>
         <div class="right">
-          <img src="../../assets/images/Home/left-text-2.png" alt="社区">
+          <img src="../../assets/images/Home/left-text-3.png" alt="社区">
         </div>
       </div>
       <div class="left-picture">
